@@ -1,0 +1,201 @@
+body {
+  font-family: "Inter", sans-serif;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.home {
+  display: grid;
+  grid-template-areas: "navbar    main    events";
+  grid-template-columns: 1.2fr 3fr 1.5fr;
+}
+.home > * {
+  height: 100vh;
+}
+.home .navbar {
+  grid-area: navbar;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 2em;
+  justify-content: space-between;
+  align-items: end;
+  border-right: 0.1px solid;
+  padding-right: 1.5rem;
+}
+.home .navbar > * {
+  margin-right: 1rem;
+}
+.home .navbar .routes .branding img {
+  margin-left: 10px;
+  height: 40px;
+  margin-top: 0.5rem;
+}
+.home .navbar .routes .branding img:hover {
+  animation: logo-hover infinite 2s;
+  transition: all ease-in-out;
+}
+.home .navbar .routes > :not(:first-child) {
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 1rem;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 9999px;
+}
+.home .navbar .routes > :not(:first-child) .icon {
+  height: 25px;
+  margin-right: 1.5rem;
+}
+.home .navbar .routes .rhome .icon {
+  margin-right: 1.2rem !important;
+}
+.home .navbar .routes button {
+  outline: none;
+  border: none;
+  background-color: #1DA1F2;
+  color: white;
+  font-size: 18px !important;
+  margin-left: 15px;
+  width: 100% !important;
+  border-radius: 9999px;
+  transition: 0.2s ease-in-out;
+  margin-top: 1.5rem;
+}
+.home .navbar .routes button:hover {
+  background-color: #0d95e8 !important;
+}
+.home .navbar .user-flake {
+  display: grid;
+  grid-template-areas: "user   more";
+  grid-template-columns: 2fr 1fr;
+  margin-bottom: 0.5rem;
+  position: relative;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 100px;
+  margin-bottom: 0.1rem;
+  margin-right: -0.4rem;
+}
+.home .navbar .user-flake .user-flake-main {
+  grid-area: user;
+  display: flex;
+}
+.home .navbar .user-flake .user-flake-main img {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  margin-right: 10px;
+  transition: 0.2s ease-in-out;
+}
+.home .navbar .user-flake .user-flake-main .user-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.home .navbar .user-flake .user-flake-main .user-details .display {
+  font-weight: bold;
+  font-size: small;
+}
+.home .navbar .user-flake .user-flake-main .user-details .username {
+  font-size: smaller;
+}
+.home .navbar .user-flake .fmore {
+  grid-area: more;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-right: 0.5rem;
+}
+.home .navbar .user-flake .fmore > * {
+  padding: 3px;
+  transition: 0.2s ease-in-out;
+}
+.home .main {
+  grid-area: main;
+}
+.home .events {
+  grid-area: events;
+}
+
+.more-window {
+  position: relative;
+  width: 120% !important;
+  border-radius: 10px !important;
+  margin-bottom: -5.1rem;
+  bottom: 6rem;
+  left: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0 !important;
+  cursor: default !important;
+}
+.more-window > * {
+  position: relative;
+  width: 87%;
+  font-size: large;
+  padding: 10px;
+  padding-inline: 16px;
+  display: flex;
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
+}
+.more-window .theme-switch {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.more-window .theme-switch .toggle-button {
+  width: 40px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: #1DA1F2;
+  cursor: pointer;
+}
+.more-window .theme-switch .toggle-button .toggle-indicator {
+  transition: 0.2s ease-in-out;
+  position: relative;
+  left: -1px;
+  width: 20px;
+  height: 20px;
+  background-color: #EBEEF0;
+  border-radius: 100%;
+}
+.more-window .theme-switch .toggle-button .to-dark {
+  left: 21px !important;
+  background-color: #3A444C;
+}
+.more-window .log-out {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.more-window::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 9999vh;
+}
+
+@keyframes logo-hover {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(30deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+.active-nav {
+  color: #1DA1F2;
+}/*# sourceMappingURL=index.css.map */

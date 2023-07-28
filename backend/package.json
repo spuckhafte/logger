@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@prisma/client": "^5.0.0"
+  },
+  "scripts": {
+    "start": "node ./dist/server.js",
+    "dev": "tsc && node ./dist/server.js",
+    "build": "tsc",
+    "tw": "tsc --watch"
+  }
+}
