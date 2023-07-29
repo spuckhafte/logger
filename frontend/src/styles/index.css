@@ -1,3 +1,7 @@
+:root {
+  --wordcountcolor: yellow;
+}
+
 body {
   font-family: "Inter", sans-serif;
   padding: 0;
@@ -198,4 +202,138 @@ body {
 }
 .active-nav {
   color: #1DA1F2;
+}
+
+.entry-page {
+  width: 100%;
+  height: 100vh;
+  background-color: #1C2733;
+  color: white;
+}
+.entry-page .entry {
+  background-color: black;
+  width: 30rem;
+  padding-inline: 3rem;
+  padding-block: 1rem;
+  padding-bottom: 3rem;
+  border-radius: 10px;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.entry-page .entry .text {
+  font-size: xx-large;
+  font-weight: bold;
+}
+.entry-page .entry .reg-office {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  align-items: center;
+}
+.entry-page .entry .reg-office > :not(:last-child) {
+  margin-bottom: 1rem;
+  min-width: 20rem;
+}
+.entry-page .entry .reg-office .sign-in-btn {
+  border: none;
+  border-radius: 20px;
+  font-size: large;
+  padding-block: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
+  min-width: 20rem;
+}
+.entry-page .entry .reg-office .sign-in-btn:hover {
+  background-color: #d9d9d9;
+}
+.entry-page .entry .alter-entry {
+  color: #495660;
+  margin-right: 4.1rem;
+}
+.entry-page .entry .alter-entry .alter-action {
+  color: #1DA1F2;
+  cursor: pointer;
+}
+.entry-page .entry .alter-entry .alter-action:hover {
+  text-decoration-line: underline;
+}
+
+.hybrid-input {
+  font-family: "Inter", sans-serif;
+  height: 3rem;
+  border: 1px solid #283340;
+  border-radius: 5px;
+  font-size: 17px;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+.hybrid-input div {
+  height: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding-left: 0.8rem;
+  color: #3A444C;
+  cursor: text;
+  transition: 0.2s;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+.hybrid-input input {
+  background-color: transparent;
+  color: white;
+  font-size: 18px;
+  outline: none;
+  border: none;
+  height: 0%;
+  padding-left: 0.8rem;
+  transform: none;
+}
+.hybrid-input .dont-move-blur {
+  color: #3A444C !important;
+}
+.hybrid-input .show-hide-password {
+  margin-top: -15px;
+  width: -moz-fit-content;
+  width: fit-content;
+  position: relative;
+  left: 90%;
+  top: -30%;
+  cursor: pointer;
+  color: #1DA1F2;
+  opacity: 0.4;
+  transition: opacity 4s;
+}
+.hybrid-input .show-hide-password:hover {
+  transition: none !important;
+  opacity: 1;
+}
+.hybrid-input .hide-password {
+  left: 89.5%;
+}
+
+.focus-hybrid-input div {
+  font-size: 13px;
+  color: #1DA1F2;
+  height: 30%;
+  padding-top: 5px;
+}
+.focus-hybrid-input div::after {
+  content: attr(data-count);
+  margin-left: 10px;
+  font-size: smaller;
+  padding-top: 2px;
+  color: var(--wordcountcolor);
+}
+.focus-hybrid-input input {
+  border-color: #1DA1F2;
+  height: 70%;
 }/*# sourceMappingURL=index.css.map */

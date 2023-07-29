@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { createContext, useState } from 'react';      
 import Home from './components/Home';
 import useLS from './hooks/useLS';
-import EntryModal from './components/EntryModal';
+import EntryModal from './components/Entry';
 
 export const ThemeContext = createContext<{ 
   lightTheme?:boolean, 
@@ -19,6 +19,7 @@ export function getThemeStyle(lightTheme:boolean): { backgroundColor: string, co
 export default function App() {
   const [lightTheme, setLightTheme] = useLS('app-theme', true);
   const [loggedIn, _setLoggedIn] = useState(false);
+  
   return (
     <ThemeContext.Provider value={{ lightTheme: lightTheme as boolean, setLightTheme }}>
       <Routes>

@@ -1,4 +1,10 @@
 @import "_vars";
+@import "_entry";
+@import "_mixins";
+
+:root {
+    --wordcountcolor: yellow;
+}
 
 body {
     font-family: 'Inter', sans-serif;
@@ -242,4 +248,89 @@ body {
 
 .active-nav {
     color: $primary_blue
+}
+
+.entry-page {
+    @include entry;
+}
+
+.hybrid-input {
+    font-family: 'Inter', sans-serif;
+    height: 3rem;
+    border: 1px solid $dark3;
+    border-radius: 5px;
+    font-size: 17px;
+    
+    display: flex;
+    flex-direction: column;
+    @include no-select;
+
+    div {
+        height: 100%;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        padding-left: 0.8rem;
+        color: $dark4;
+        cursor: text;
+        transition: 0.2s;
+        @include no-select;
+    }
+    input {
+        background-color: transparent;
+        color: white;
+        font-size: 18px;
+        outline: none;
+        border: none;
+        height: 0%;
+        padding-left: 0.8rem;
+        transform: none;
+    }
+
+    .dont-move-blur {
+        color: $dark4 !important;
+    }
+
+    .show-hide-password {
+      margin-top: -15px;
+      width: fit-content;
+      position: relative;
+      left: 90%;
+      top: -30%;
+      cursor: pointer;
+      color: $primary-blue;
+      opacity: 0.4;
+      transition: opacity 4s;
+      &:hover {
+        transition: none !important;
+        opacity: 1;
+        
+      }
+    }
+
+    .hide-password {
+        left: 89.5%;
+    }
+}
+
+.focus-hybrid-input {
+    div {
+        font-size: 13px;
+        color: $primary-blue;
+        height: 30%;
+        padding-top: 5px;
+    
+        &::after {
+            content: attr(data-count);
+            margin-left: 10px;
+            font-size: smaller;
+            padding-top: 2px;
+            color: var(--wordcountcolor);
+        }
+    }
+    
+    input {
+        border-color: $primary-blue;
+        height: 70%;
+    }
 }
