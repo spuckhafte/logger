@@ -7,22 +7,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Server } from "socket.io";
-import dotenv from "dotenv";
-import { InitMailer } from "./helpers/mail.js";
-import AuthorizeUser from "./helpers/auth.js";
-dotenv.config();
-const io = new Server();
-io.on("connection", (socket) => {
-    socket.on('signup-verify', (data) => __awaiter(void 0, void 0, void 0, function* () {
-        yield AuthorizeUser(data, socket);
-    }));
-});
-function Init() {
-    var _a;
+import nodemailer from 'nodemailer';
+let transporter;
+export function InitMailer() {
+    const [_, mail, pass] = process.env.MAIL_INFO.split('||');
+    transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: mail,
+            pass
+        }
+    });
+    return transporter;
+}
+export function sendMail(mail, otp) {
     return __awaiter(this, void 0, void 0, function* () {
-        InitMailer();
-        io.listen(+((_a = process.env.PORT) !== null && _a !== void 0 ? _a : 3000));
+        const transport = transporter !== null && transporter !== void 0 ? transporter : InitMailer();
+        return yield transport.sendMail({
+            from: `"Twitter-Clone Mails" <click.app.validate@gmail.com>`,
+            to: mail,
+            subject: "Email Verification",
+            html: `<h2>Your Twitter-Clone verification code is:</h2><h1>${otp}</h1>`,
+        });
     });
 }
-Init();

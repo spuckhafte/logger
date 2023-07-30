@@ -18,7 +18,7 @@ export function getThemeStyle(lightTheme:boolean): { backgroundColor: string, co
 
 export default function App() {
   const [lightTheme, setLightTheme] = useLS('app-theme', true);
-  const [loggedIn, _setLoggedIn] = useState(false);
+  const [loggedIn, _setLoggedIn] = useState(true);
   
   return (
     <ThemeContext.Provider value={{ lightTheme: lightTheme as boolean, setLightTheme }}>

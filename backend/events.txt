@@ -1,0 +1,16 @@
+signup-verify (client)
+    -userdata
+
+error-verification (server)
+    -[invalid mail]
+    -[username already taken]
+    -[email already taken]
+
+verify-otp (server)
+    -otp
+
+verified (client)
+
+signup-ok (server)
+    -hashed_password
+
