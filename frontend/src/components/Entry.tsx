@@ -1,21 +1,37 @@
 import { useState } from 'react';
 import EntryLogin from './EntryLogin';
 import EntrySignup from './EntrySignup';
+import Modal from './util/Modal';
+import useLS from '../hooks/useLS';
 
 
 export default () => {
-    const [entryType, setEntryType] = useState<'log'|'sign'>('log');
+    const [entryType, setEntryType] = useLS('sign-in-mode', 'log');
+
+    const [showOtpModal, setShowOtpModal] = useState(false); 
+    const [otp, setOtp] = useState('');
 
     function handleEntryAlter() {
+        if (showOtpModal) return;
         setEntryType(entryType == 'log' ? 'sign' : 'log');
     }
 
     return (
         <div className="entry-page">
-            <div className="entry">
+            <div 
+                className="entry" 
+                style={{ 
+                    filter: `blur(${showOtpModal ? '10px' : '0'})` 
+                }}
+            >
                 <img src="../../public/vite.svg" alt="logo" />
                 {
-                    entryType === 'log' ? <EntryLogin /> : <EntrySignup />
+                    entryType === 'log' 
+                    ? <EntryLogin /> 
+                    : <EntrySignup 
+                        setOtpModal={setShowOtpModal} 
+                        otp={otp} 
+                    />
                 }
                 <br />
                 <div className='alter-entry'>
@@ -29,6 +45,18 @@ export default () => {
                     </span>
                 </div>
             </div>
+            {
+            showOtpModal 
+            ? <Modal 
+                title="OTP sent!" 
+                setInputReturn={setOtp} 
+                className="otp-modal" 
+                placeholder="OTP"
+                max={5}
+                btnText='Verify'
+            />
+            : ""
+        }
         </div>
     )
 }

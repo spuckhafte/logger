@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
 
 type HybridInputProps = {
-    type: "text"|"password",
+    type: "text"|"password"|"number",
     className: string,
     placeholder: string,
     value: string,

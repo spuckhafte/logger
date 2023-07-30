@@ -7,24 +7,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { sendMail } from "./mail";
-import Users from "../schema/Users";
+import { sendMail } from "./mail.js";
 import { createHash } from 'node:crypto';
 export default function AuthorizeUser(userData, socket) {
     return __awaiter(this, void 0, void 0, function* () {
-        let alreadyExistingUser = yield Users.findOne({ username: userData.username });
-        if (alreadyExistingUser === null || alreadyExistingUser === void 0 ? void 0 : alreadyExistingUser._id) {
-            socket.emit('verification-error', 'username already taken');
-            return false;
-        }
-        alreadyExistingUser = yield Users.findOne({ email: userData.email });
-        if (alreadyExistingUser === null || alreadyExistingUser === void 0 ? void 0 : alreadyExistingUser._id) {
-            socket.emit('verification-error', 'email already taken');
-            return false;
-        }
         try {
             const otp = generateOTP();
-            yield sendMail(userData.email, otp);
+            yield sendMail(userData.email, otp.toString());
             socket.emit('verify-otp', otp);
         }
         catch (e) {
@@ -32,8 +21,9 @@ export default function AuthorizeUser(userData, socket) {
             return false;
         }
         userData.password = createHash('sha256').update(userData.password).digest('hex');
+        console.log('here');
         socket.on('verified', () => __awaiter(this, void 0, void 0, function* () {
-            yield Users.create(Object.assign({}, userData));
+            console.log('vv');
             socket.emit('signup-ok', userData.password);
         }));
         return true;
@@ -42,8 +32,7 @@ export default function AuthorizeUser(userData, socket) {
 function generateOTP() {
     const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     let otp = '';
-    let i = 0;
-    while (i < 5)
+    for (let i = 0; i < 5; i++)
         otp += numbers[Math.floor(Math.random() * numbers.length)].toString();
     return otp;
 }

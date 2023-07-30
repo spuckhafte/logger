@@ -181,13 +181,6 @@ body {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
-.more-window::before {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 0;
-  padding: 9999vh;
-}
 
 @keyframes logo-hover {
   0% {
@@ -221,6 +214,7 @@ body {
   position: absolute;
   left: 50%;
   top: 50%;
+  transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
 .entry-page .entry .text {
@@ -336,4 +330,36 @@ body {
 .focus-hybrid-input input {
   border-color: #1DA1F2;
   height: 70%;
+}
+
+.external-modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 15rem;
+  padding: 2.5rem;
+  background-color: black;
+  box-shadow: 0px 0px 2.5rem 0.2em #5B7083;
+  border-radius: 2rem;
+}
+.external-modal .title {
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+.external-modal button {
+  margin-top: 1rem;
+  width: 100%;
+  border: none;
+  border-radius: 20px;
+  font-size: large;
+  padding-block: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
+  font-size: medium;
+}
+.external-modal button:hover {
+  background-color: #d9d9d9;
 }/*# sourceMappingURL=index.css.map */

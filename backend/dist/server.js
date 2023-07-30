@@ -12,8 +12,8 @@ import dotenv from "dotenv";
 import { InitMailer } from "./helpers/mail.js";
 import AuthorizeUser from "./helpers/auth.js";
 dotenv.config();
-const io = new Server();
-io.on("connection", (socket) => {
+const io = new Server({ cors: { origin: "*" } });
+io.on("connection", socket => {
     socket.on('signup-verify', (data) => __awaiter(void 0, void 0, void 0, function* () {
         yield AuthorizeUser(data, socket);
     }));

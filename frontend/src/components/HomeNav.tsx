@@ -2,10 +2,10 @@ import { faHome, faHashtag, faBell, faUser, faEllipsis  } from "@fortawesome/fre
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Brand from '../../public/vite.svg';
 import { useContext, useState, useRef } from "react";
-import { ThemeContext } from "../App";
+import { AppContext } from "../App";
 
 export default () => {
-    const { lightTheme } = useContext(ThemeContext);
+    const { lightTheme } = useContext(AppContext);
     const [showMore, setShowMore] = useState(false);
 
     function onOver(e:React.MouseEvent<HTMLDivElement, MouseEvent>, veryDark=false) {
@@ -36,8 +36,6 @@ export default () => {
             el.classList.remove('active-nav');
             if (el.classList[0] == currentClass)
                 el.classList.add('active-nav');
-            
-            
         }
     }
 
@@ -67,7 +65,7 @@ export default () => {
                 <span>Profile</span>
             </div>
 
-            <div className="rmore" onClick={onNavLinkClick} onMouseOver={onOver} onMouseLeave={onLeave}>
+            <div className="rmore" id="rmore" onClick={onNavLinkClick} onMouseOver={onOver} onMouseLeave={onLeave}>
                 
                 <FontAwesomeIcon icon={faEllipsis} className="icon" />
                 <span>More</span>
@@ -110,19 +108,16 @@ function MoreWindow(props: {
     onLeave: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void,
     setShowMore: React.Dispatch<React.SetStateAction<boolean>>
 }) {
-    const { lightTheme, setLightTheme } = useContext(ThemeContext);
-    function handleClick(e:React.MouseEvent<HTMLDivElement, MouseEvent>) {
-        if (
-            (
-                e.pageX < e.currentTarget.offsetLeft || 
-                e.pageX > e.currentTarget.offsetLeft + e.currentTarget.offsetWidth
-            ) ||
-            (
-                e.pageY < e.currentTarget.offsetTop || 
-                e.pageY > e.currentTarget.offsetTop + e.currentTarget.offsetHeight
-            )
-        ) props.setShowMore(false);
-    }
+    const { lightTheme, setLightTheme } = useContext(AppContext);
+    
+    document.addEventListener('click', e => {
+        if (!e.target) return;
+        const moreWindow = document.getElementById('more-window');
+        const moreNav = document.getElementById('rmore');
+
+        if (!moreWindow?.contains(e.target as Node) && !moreNav?.contains(e.target as Node))
+            props.setShowMore(false);
+    })
 
     const toggler = useRef<HTMLDivElement>(null);
     
@@ -137,8 +132,8 @@ function MoreWindow(props: {
         style={{ 
             backgroundColor: lightTheme ? "white" : "#17202A",
             boxShadow: `0 0 6px 7px ${lightTheme ? "#EBEEF0" : "#283340"}` 
-        }} 
-        onClick={handleClick}
+        }}
+        id="more-window"
     >
         <div className="theme-switch">
             <div>Theme</div>
