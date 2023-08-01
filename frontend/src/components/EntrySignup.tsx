@@ -1,20 +1,49 @@
-import { socket } from "../App";
+import { AppContext, socket } from "../App";
 import HybridInput from "./util/HybridInput";
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { AuthData } from '../../../types';
+import { incomingSockets } from "../helpers/funcs";
+import { passwordValidator, usernameValidator } from "../helpers/validator";
+import EmailValidator from 'email-validator';
 
 type Props = {
     setOtpModal: React.Dispatch<React.SetStateAction<boolean>>
-    otp: string
+    otp: string,
+    setShowErrorModal: React.Dispatch<React.SetStateAction<boolean>>
+    setErrorReason: React.Dispatch<React.SetStateAction<string|JSX.Element>>
 }
 export default function EntrySignup(props: Props) {
     const [signupMail, setSignupMail] = useState('');
     const [signupName, setSignupName] = useState('');
     const [signupPassword, setSignupPassword] = useState('');
 
+    const { setLoadScreen } = useContext(AppContext);
+
     const otpFromServer = useRef<string>();
 
     function handleFormSubmit() {
+        if (!EmailValidator.validate(signupMail)) {
+            props.setErrorReason('Invalid Mail');
+            props.setShowErrorModal(true);
+            return;
+        }
+
+        const usernameValidated = usernameValidator(signupName);
+        if (usernameValidated !== true) {
+            props.setErrorReason(usernameValidated);
+            props.setShowErrorModal(true);
+            return;
+        }
+
+        const passwordValidated = passwordValidator(signupPassword);
+        if (passwordValidated !== true) {
+            props.setErrorReason(passwordValidated);
+            props.setShowErrorModal(true);
+            return;
+        }
+        
+
+        if (setLoadScreen) setLoadScreen(true);
         const userData: AuthData = {
             username: signupName,
             password: signupPassword,
@@ -23,41 +52,37 @@ export default function EntrySignup(props: Props) {
         socket.emit('signup-verify', userData);
     }
 
-    document.addEventListener('click', e => {
-        const otpModal = document.getElementsByClassName('otp-modal')[0];
-        const joinBtn = document.getElementsByClassName('sign-in-btn')[0];
-
-        if (!otpModal?.contains(e.target as Node) && !joinBtn?.contains(e.target as Node))
-            props.setOtpModal(false);
-    });
-
-
-    // ---incoming sockets---
-    const delta = useRef(0);
-    useEffect(() => {
-        if (delta.current == 1) return; // make sure that sockets only register once
-        delta.current = 1;
-
-        socket.on('verify-otp', (otp: string) => {
-            otpFromServer.current = otp;
-            props.setOtpModal(true);
-        });
-
-        socket.on('signup-ok', async (securePassword: string) => {
-            console.log('LoggedIn ' + securePassword);
-        });
-    }, []);
-
-
     // verify otp
     useEffect(() => {
         if (props.otp) {
             if (props.otp.trim() === otpFromServer.current) {
                 socket.emit('verified');
                 props.setOtpModal(false);
-            } else alert('wrong otp');
+            } else {
+                props.setErrorReason('Wrong OTP!');
+                props.setShowErrorModal(true);
+            }
         }
     }, [props.otp]);
+
+
+    incomingSockets(() => {
+        socket.on('verify-otp', (otp: string) => {
+            if (setLoadScreen) setLoadScreen(false);
+            otpFromServer.current = otp;
+            props.setOtpModal(true);
+        });
+
+        socket.on('verification-error', (reason: string) => {
+            if (setLoadScreen) setLoadScreen(false);                        
+            props.setErrorReason(reason);
+            props.setShowErrorModal(true);
+
+            setTimeout(() => {
+                props.setShowErrorModal(false);
+            }, 2.5 * 1000);
+        });
+    });
 
     return <>
         <div className="text">Join Twitter today</div>

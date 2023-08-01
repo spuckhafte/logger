@@ -2,20 +2,21 @@ import { Socket } from "socket.io";
 import { AuthData } from "../../../types";
 import { sendMail } from "./mail.js";
 import Users from "../schema/Users.js";
-import { createHash } from 'node:crypto';
+import { sha } from "./funcs.js";
 
 export default async function AuthorizeUser(userData: AuthData, socket: Socket) {
-    // let alreadyExistingUser = await Users.findOne({ username: userData.username });
-    // if (alreadyExistingUser?._id) {
-    //     socket.emit('verification-error', 'username already taken');
-    //     return false;
-    // }
+    let alreadyExistingUser = await Users.findOne({ email: userData.email });
+    if (alreadyExistingUser?._id) {
+        socket.emit('verification-error', 'email already taken');
+        return false;
+    }
 
-    // alreadyExistingUser = await Users.findOne({ email: userData.email });
-    // if (alreadyExistingUser?._id) {
-    //     socket.emit('verification-error', 'email already taken');
-    //     return false;
-    // }
+    alreadyExistingUser = await Users.findOne({ username: userData.username });
+    if (alreadyExistingUser?._id) {
+        socket.emit('verification-error', 'username already taken');
+        return false;
+    }
+    
 
     try {
         const otp = generateOTP();
@@ -26,16 +27,41 @@ export default async function AuthorizeUser(userData: AuthData, socket: Socket) 
         return false;
     }
 
-    userData.password = createHash('sha256').update(userData.password).digest('hex');
+    userData.password = sha(userData.password)
 
-    console.log('here')
     socket.on('verified', async () => {
-        // await Users.create({
-        //     ...userData
-        // });
-        console.log('vv')
+        alreadyExistingUser = await Users.findOne({ email: userData.email });
+        if (alreadyExistingUser?._id) {
+            if (alreadyExistingUser.password == userData.password) return false;
+            else {
+                /* 
+                    --cut-chase situation--
+                    someone else registered with same credential while user was verifying otp 
+                */
+               console.log('here')
+               socket.emit('verification-error', 'email already taken');
+               return false;
+            }
+        }
 
-        socket.emit('signup-ok', userData.password);
+        // cut-chase
+        alreadyExistingUser = await Users.findOne({ username: userData.username });
+        if (alreadyExistingUser?._id && alreadyExistingUser.password != userData.password) {
+            socket.emit('verification-error', 'username already taken');
+            return false;
+        }
+
+        const sessionId = sha(Date.now().toString());
+
+        await Users.create({
+            ...userData,
+            sessionId: {
+                id: sessionId,
+                setAt: Date.now().toString()
+            }
+        });
+
+        socket.emit('entry-ok', sessionId);
     });
     return true;
 }

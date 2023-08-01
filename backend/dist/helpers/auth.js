@@ -8,9 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { sendMail } from "./mail.js";
-import { createHash } from 'node:crypto';
+import Users from "../schema/Users.js";
+import { sha } from "./funcs.js";
 export default function AuthorizeUser(userData, socket) {
     return __awaiter(this, void 0, void 0, function* () {
+        let alreadyExistingUser = yield Users.findOne({ email: userData.email });
+        if (alreadyExistingUser === null || alreadyExistingUser === void 0 ? void 0 : alreadyExistingUser._id) {
+            socket.emit('verification-error', 'email already taken');
+            return false;
+        }
+        alreadyExistingUser = yield Users.findOne({ username: userData.username });
+        if (alreadyExistingUser === null || alreadyExistingUser === void 0 ? void 0 : alreadyExistingUser._id) {
+            socket.emit('verification-error', 'username already taken');
+            return false;
+        }
         try {
             const otp = generateOTP();
             yield sendMail(userData.email, otp.toString());
@@ -20,11 +31,29 @@ export default function AuthorizeUser(userData, socket) {
             socket.emit('verification-error', 'invalid mail');
             return false;
         }
-        userData.password = createHash('sha256').update(userData.password).digest('hex');
-        console.log('here');
+        userData.password = sha(userData.password);
         socket.on('verified', () => __awaiter(this, void 0, void 0, function* () {
-            console.log('vv');
-            socket.emit('signup-ok', userData.password);
+            alreadyExistingUser = yield Users.findOne({ email: userData.email });
+            if (alreadyExistingUser === null || alreadyExistingUser === void 0 ? void 0 : alreadyExistingUser._id) {
+                if (alreadyExistingUser.password == userData.password)
+                    return false;
+                else {
+                    console.log('here');
+                    socket.emit('verification-error', 'email already taken');
+                    return false;
+                }
+            }
+            alreadyExistingUser = yield Users.findOne({ username: userData.username });
+            if ((alreadyExistingUser === null || alreadyExistingUser === void 0 ? void 0 : alreadyExistingUser._id) && alreadyExistingUser.password != userData.password) {
+                socket.emit('verification-error', 'username already taken');
+                return false;
+            }
+            const sessionId = sha(Date.now().toString());
+            yield Users.create(Object.assign(Object.assign({}, userData), { sessionId: {
+                    id: sessionId,
+                    setAt: Date.now().toString()
+                } }));
+            socket.emit('entry-ok', sessionId);
         }));
         return true;
     });

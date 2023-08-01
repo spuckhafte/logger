@@ -4,8 +4,6 @@
     background-color: $dark2;
     color: white;
 
-
-
     .entry {
         background-color:  black;
         width: 30rem;
@@ -49,6 +47,33 @@
                 cursor: pointer;
                 &:hover {
                     text-decoration-line: underline;
+                }
+            }
+        }
+    }
+
+    .error-modal {
+        width: fit-content !important;
+        
+        .validator-reasons-list {
+            .title {
+                color: lighten($color: red, $amount: 20)
+            }
+            .validator-reasons {
+                font-size: medium;
+                margin-right: 1rem;
+                .vali {
+                    color: $primary-blue;
+                    text-transform: capitalize;
+                }
+
+                b {
+                    color: lighten($color: red, $amount: 20)
+                }
+
+                >* {
+                    margin-bottom: 0.5rem;
+                    text-transform: lowercase;
                 }
             }
         }

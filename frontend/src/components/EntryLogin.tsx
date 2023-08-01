@@ -1,9 +1,51 @@
+import { LoginData } from "../../../types";
+import { AppContext, socket } from "../App";
+import { incomingSockets } from "../helpers/funcs";
 import HybridInput from "./util/HybridInput";
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
-export default function EntryLogin() {
+type LoginProps = {
+    setShowErrorModal: React.Dispatch<React.SetStateAction<boolean>>
+    setErrorReason: React.Dispatch<React.SetStateAction<string|JSX.Element>>
+}
+export default function EntryLogin(props: LoginProps) {
     const [loginName, setLoginName] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
+
+    const { setLoadScreen } = useContext(AppContext);
+
+    // auto-login
+    incomingSockets(() => {
+        const prevSessionId = localStorage.getItem('twitterclone-sessionid');
+        if (prevSessionId) {
+            if (setLoadScreen) setLoadScreen(true);
+            socket.emit('login', { sessionId: prevSessionId });
+        }
+    });
+
+    function handleSignIn() {
+        if (!loginName || !loginPassword) return;
+        if (setLoadScreen) setLoadScreen(true);
+
+        const userData: LoginData = {
+            username: loginName,
+            password: loginPassword
+        }
+        socket.emit('login', userData);
+    }
+
+    incomingSockets(() => {
+        socket.on('login-failed', reason => {
+            if (setLoadScreen) setLoadScreen(false);
+            props.setErrorReason(reason);
+            props.setShowErrorModal(true);
+        });
+
+        socket.on('auto-login-failed', () => {
+            if (setLoadScreen) setLoadScreen(false);
+            localStorage.setItem('twitterclone-sessionid', '');
+        })
+    })
 
     return <>
         <div className="text">Sign in to Twitter</div>
@@ -22,7 +64,11 @@ export default function EntryLogin() {
                 limit={16}
             />
 
-            <button className="sign-in-btn">Sign In</button>
+            <button 
+                className="sign-in-btn" 
+                onClick={handleSignIn}
+                style={{ cursor: (!loginName || !loginPassword) ? "default" : "pointer" }}
+            >Sign In</button>
         </div>
     </>
 }

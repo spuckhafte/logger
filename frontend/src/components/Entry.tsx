@@ -1,36 +1,50 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import EntryLogin from './EntryLogin';
 import EntrySignup from './EntrySignup';
 import Modal from './util/Modal';
-import useLS from '../hooks/useLS';
+import { AppContext, socket } from '../App';
+import { incomingSockets } from '../helpers/funcs';
 
 
 export default () => {
-    const [entryType, setEntryType] = useLS('sign-in-mode', 'log');
+    const [entryType, setEntryType] = useState('log');
 
     const [showOtpModal, setShowOtpModal] = useState(false); 
     const [otp, setOtp] = useState('');
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [errorReason, setErrorReason] = useState<string|JSX.Element>('');
+
+    const { setLoadScreen, setLoggedIn } = useContext(AppContext);
 
     function handleEntryAlter() {
-        if (showOtpModal) return;
+        if (showOtpModal || showErrorModal) return;
         setEntryType(entryType == 'log' ? 'sign' : 'log');
     }
 
+    incomingSockets(() => {
+        socket.on('entry-ok', async (sessionId: string) => {
+            setOtp('')
+            localStorage.setItem('twitterclone-sessionid', sessionId);
+            if (setLoggedIn) setLoggedIn(true);
+            if (setLoadScreen) setLoadScreen(false);
+        });
+    });
+
     return (
         <div className="entry-page">
-            <div 
-                className="entry" 
-                style={{ 
-                    filter: `blur(${showOtpModal ? '10px' : '0'})` 
-                }}
-            >
+            <div className="entry">
                 <img src="../../public/vite.svg" alt="logo" />
                 {
                     entryType === 'log' 
-                    ? <EntryLogin /> 
+                    ? <EntryLogin
+                        setErrorReason={setErrorReason}
+                        setShowErrorModal={setShowErrorModal}
+                    /> 
                     : <EntrySignup 
-                        setOtpModal={setShowOtpModal} 
-                        otp={otp} 
+                        setOtpModal={setShowOtpModal}
+                        otp={otp}
+                        setErrorReason={setErrorReason}
+                        setShowErrorModal={setShowErrorModal}
                     />
                 }
                 <br />
@@ -46,17 +60,35 @@ export default () => {
                 </div>
             </div>
             {
-            showOtpModal 
-            ? <Modal 
-                title="OTP sent!" 
-                setInputReturn={setOtp} 
-                className="otp-modal" 
-                placeholder="OTP"
-                max={5}
-                btnText='Verify'
-            />
-            : ""
-        }
+                showOtpModal 
+                ? <Modal 
+                    title="OTP sent!" 
+                    setInputReturn={setOtp} 
+                    className="otp-modal" 
+                    placeholder="OTP"
+                    max={5}
+                    btnText='Verify'
+                    setShowModal={setShowOtpModal}
+                />
+                : ""
+            }
+            {
+                showErrorModal 
+                    ? <ErrorModal 
+                        errorReason={errorReason} 
+                        setShowModal={setShowErrorModal} 
+                    /> 
+                    : ""
+            }
         </div>
     )
+}
+
+function ErrorModal(props: { errorReason: string|JSX.Element, setShowModal: React.Dispatch<React.SetStateAction<boolean>> }) {
+    return <Modal 
+        title={props.errorReason} 
+        className="error-modal"
+        setInputReturn={false}
+        setShowModal={props.setShowModal}
+    />
 }

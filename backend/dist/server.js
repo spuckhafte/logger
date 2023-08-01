@@ -11,18 +11,29 @@ import { Server } from "socket.io";
 import dotenv from "dotenv";
 import { InitMailer } from "./helpers/mail.js";
 import AuthorizeUser from "./helpers/auth.js";
+import mongoose from "mongoose";
+import LoginUser from "./helpers/login.js";
 dotenv.config();
 const io = new Server({ cors: { origin: "*" } });
 io.on("connection", socket => {
     socket.on('signup-verify', (data) => __awaiter(void 0, void 0, void 0, function* () {
         yield AuthorizeUser(data, socket);
     }));
+    socket.on('login', (data) => __awaiter(void 0, void 0, void 0, function* () {
+        yield LoginUser(data, socket);
+    }));
 });
 function Init() {
-    var _a;
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         InitMailer();
+        console.log('📨 [mailer is ready]');
         io.listen(+((_a = process.env.PORT) !== null && _a !== void 0 ? _a : 3000));
+        console.log(`⚡ [listening to port: ${(_b = process.env.PORT) !== null && _b !== void 0 ? _b : 0}]`);
+        mongoose.set('strictQuery', false);
+        yield mongoose.connect(process.env.DB);
+        console.log('📦 [connected to db]');
+        console.log('\n🚀 [SERVER INITIALIZED]');
     });
 }
 Init();

@@ -1,7 +1,7 @@
 signup-verify (client)
-    -userdata
+    -userdata :: mail, name, pwd
 
-error-verification (server)
+verification-error (server)
     -[invalid mail]
     -[username already taken]
     -[email already taken]
@@ -11,6 +11,13 @@ verify-otp (server)
 
 verified (client)
 
-signup-ok (server)
-    -hashed_password
+entry-ok (server)
+    -sessionId
 
+login (client)
+    -userdata :: (name, pwd) || (sessionId)
+
+login-failed (server)
+    -[invalid credentials]
+
+auto-login-failed (server)
