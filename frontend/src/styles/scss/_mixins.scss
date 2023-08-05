@@ -31,3 +31,9 @@
         background-color: darken($color: white, $amount: 15);
     }
 }
+
+@mixin dotdot {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

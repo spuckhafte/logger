@@ -21,9 +21,9 @@ export async function sendMail(mail:string, otp:string) {
     const transport = transporter ?? InitMailer();
 
     return await transport.sendMail({
-        from: `"Twitter-Clone Mails" <click.app.validate@gmail.com>`,
+        from: `"Logger Mails" <click.app.validate@gmail.com>`,
         to: mail,
         subject: "Email Verification",
-        html: `<h2>Your Twitter-Clone verification code is:</h2><h1>${otp}</h1>`,
+        html: `<h2>Your Logger verification code is:</h2><h1>${otp}</h1>`,
     });
 }

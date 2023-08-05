@@ -1,12 +1,17 @@
 import { faHome, faHashtag, faBell, faUser, faEllipsis  } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Brand from '../../public/vite.svg';
+import Brand from '../../public/logo.png';
 import { useContext, useState, useRef } from "react";
 import { AppContext } from "../App";
+import { getLocal, storeLocal } from "../helpers/funcs";
+import { EntryData } from "../../../types";
+import HybridImg from "./util/HybridImg";
 
 export default () => {
     const { lightTheme } = useContext(AppContext);
     const [showMore, setShowMore] = useState(false);
+
+    const { username, displayName, pfp } = getLocal('entryData') as EntryData;
 
     function onOver(e:React.MouseEvent<HTMLDivElement, MouseEvent>, veryDark=false) {
         let dark = veryDark ? "#1C2733" : "#283340";
@@ -39,10 +44,10 @@ export default () => {
         }
     }
 
-    return <nav className="navbar" style={{ borderRightColor: lightTheme ? "#EBEEF0" : "#283340" }}>
+    return <nav className="navbar">
         <div className="routes">
             <main className="branding">
-                <img src={Brand} alt="twitter-logo" />
+                <img src={Brand} alt="logger-logo" />
             </main>
 
             <div className="rhome active-nav" onClick={onNavLinkClick} onMouseOver={onOver} onMouseLeave={onLeave}>
@@ -80,20 +85,19 @@ export default () => {
                     : "" 
             }
 
-            <button>Tweet</button>
+            <button>Log</button>
         </div>
 
         <div className="user-flake" onMouseOver={onOver} onMouseLeave={onLeave}>
             <div className="user-flake-main">
-                <img src="https://i.pinimg.com/236x/b5/8b/9d/b58b9d26e70af097afda7ecbcda9b8bb.jpg" alt="pfp" />
+                <HybridImg src={pfp} alt="pfp" className="usr-img" />
                 <div className="user-details">
-                    <span className="display">Rakshit</span>
+                    <span className="display" title={displayName}>{displayName}</span>
                     <span 
                         className="username"
                         style={{ color: lightTheme ? '#5B7083' : '#8899A6' }}
-                    >
-                        @spuckhafte
-                    </span>
+                        title={username}
+                    >@{username}</span>
                 </div>
             </div>
             <div className="fmore">
@@ -127,6 +131,11 @@ function MoreWindow(props: {
         else setLightTheme(true);
     }
 
+    function logout() {
+        storeLocal('entryData', '');
+        location.reload();
+    }
+
     return <div 
         className="more-window" 
         style={{ 
@@ -145,6 +154,7 @@ function MoreWindow(props: {
             className="log-out" 
             onMouseOver={e => props.onOver(e, true)} 
             onMouseLeave={props.onLeave}
+            onClick={logout}
         >
             Logout
         </div>

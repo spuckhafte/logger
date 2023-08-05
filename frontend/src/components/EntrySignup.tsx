@@ -85,7 +85,7 @@ export default function EntrySignup(props: Props) {
     });
 
     return <>
-        <div className="text">Join Twitter today</div>
+        <div className="text">Join Logger today</div>
 
         <div className="reg-office">
             <HybridInput 

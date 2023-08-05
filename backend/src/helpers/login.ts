@@ -1,5 +1,5 @@
 import { Socket } from "socket.io";
-import { LoginData } from "../../../types";
+import { EntryData, LoginData } from "../../../types";
 import Users from "../schema/Users.js";
 import { sessionExpired, sha } from "./funcs.js";
 
@@ -26,7 +26,13 @@ export default async function LoginUser(userData: LoginData, socket: Socket) {
         user.lastActive = Date.now().toString();
         await user.save();
 
-        socket.emit('entry-ok', newSessionId);
+        socket.emit('entry-ok', {
+            username,
+            email: user.email, 
+            sessionId: newSessionId,
+            displayName: user.displayName,
+            pfp: user.pfp
+        } as EntryData);
     } else {
         const user = await Users.findOne({ 'sessionId.id': sessionId });
         
@@ -35,7 +41,14 @@ export default async function LoginUser(userData: LoginData, socket: Socket) {
         } else {
             user.lastActive = Date.now().toString();
             await user.save();
-            socket.emit('entry-ok', user?.sessionId?.id)
+
+            socket.emit('entry-ok', {
+                username: user.username,
+                email: user.email, 
+                sessionId: user.sessionId?.id,
+                displayName: user.displayName,
+                pfp: user.pfp
+            } as EntryData);
         }
     }
 }

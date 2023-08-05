@@ -16,6 +16,10 @@
         @include abs-center;
         transform: translate(-50%, -50%);
 
+        img {
+            height: 50px;
+        }
+
         .text {
             font-size: xx-large;
             font-weight: bold;

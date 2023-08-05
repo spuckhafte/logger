@@ -24,10 +24,10 @@ export function sendMail(mail, otp) {
     return __awaiter(this, void 0, void 0, function* () {
         const transport = transporter !== null && transporter !== void 0 ? transporter : InitMailer();
         return yield transport.sendMail({
-            from: `"Twitter-Clone Mails" <click.app.validate@gmail.com>`,
+            from: `"Logger Mails" <click.app.validate@gmail.com>`,
             to: mail,
             subject: "Email Verification",
-            html: `<h2>Your Twitter-Clone verification code is:</h2><h1>${otp}</h1>`,
+            html: `<h2>Your Logger verification code is:</h2><h1>${otp}</h1>`,
         });
     });
 }

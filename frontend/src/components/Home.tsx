@@ -1,15 +1,12 @@
 import HomeNav from "./HomeNav"
-import { useContext } from "react";
-import { AppContext, getThemeStyle } from "../App";
+import HomeMain from "./HomeMain";
 
 export default () => {
-    const { lightTheme } = useContext(AppContext);
-
     return <>
-        <div className="home" style={getThemeStyle(lightTheme ?? false)}>
+        <div className="home">
             <HomeNav />
 
-            <div className="main"></div>
+            <HomeMain />
 
             <div className="events"></div>
         </div>

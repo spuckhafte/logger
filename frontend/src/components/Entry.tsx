@@ -3,7 +3,8 @@ import EntryLogin from './EntryLogin';
 import EntrySignup from './EntrySignup';
 import Modal from './util/Modal';
 import { AppContext, socket } from '../App';
-import { incomingSockets } from '../helpers/funcs';
+import { incomingSockets, storeLocal } from '../helpers/funcs';
+import { EntryData } from '../../../types';
 
 
 export default () => {
@@ -22,9 +23,11 @@ export default () => {
     }
 
     incomingSockets(() => {
-        socket.on('entry-ok', async (sessionId: string) => {
-            setOtp('')
-            localStorage.setItem('twitterclone-sessionid', sessionId);
+        socket.on('entry-ok', async (entryData: EntryData) => {
+            setOtp('');
+
+            storeLocal('entryData', entryData);
+
             if (setLoggedIn) setLoggedIn(true);
             if (setLoadScreen) setLoadScreen(false);
         });
@@ -33,7 +36,7 @@ export default () => {
     return (
         <div className="entry-page">
             <div className="entry">
-                <img src="../../public/vite.svg" alt="logo" />
+                <img src="../../public/logo.png" alt="logo" />
                 {
                     entryType === 'log' 
                     ? <EntryLogin

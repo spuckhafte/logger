@@ -1,7 +1,8 @@
 import { SetStateAction, useState } from "react"
+import { getLocal, storeLocal } from "../helpers/funcs";
 
 export default (key:string, initialValue:string|boolean) => {
-    let previousValueInLS = localStorage.getItem(key);
+    let previousValueInLS = getLocal(key) as string;
     if (previousValueInLS) 
         initialValue = previousValueInLS;
 
@@ -9,12 +10,12 @@ export default (key:string, initialValue:string|boolean) => {
     if (initialValue == '<<true>>') initialValue = true;
     
     const [state, _setState] = useState(initialValue);
-    localStorage.setItem(key, typeof initialValue == 'boolean' ? `<<${initialValue}>>` : initialValue);
+    storeLocal(key, typeof initialValue == 'boolean' ? `<<${initialValue}>>` : initialValue);
 
     function setState(value:SetStateAction<string|boolean>) {
         _setState(value);
         const val = typeof value == "function" ? value(state) : value as string;
-        localStorage.setItem(key, typeof val == 'boolean' ? `<<${val}>>` : val);
+        storeLocal(key, typeof val == 'boolean' ? `<<${val}>>` : val);
     }
 
     return [state, setState] as [(string|boolean), (value: SetStateAction<string | boolean>) => void];

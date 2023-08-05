@@ -1,14 +1,14 @@
-# twitter-clone
+# Logger
 *...🔨 (under development)*
 
 ## How to run (dev)
 1. Clone the repo: 
 ```bash
-git clone https://github.com/spuckhafte/twitter-clone
+git clone https://github.com/spuckhafte/logger
 ```
 2. Open two terminals and goto the app directory in both of 'em.
 ```bash
-cd twitter-clone
+cd logger
 ```
 3. First terminal:
 ```bash

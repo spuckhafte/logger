@@ -1,6 +1,6 @@
-import { LoginData } from "../../../types";
+import { EntryData, LoginData } from "../../../types";
 import { AppContext, socket } from "../App";
-import { incomingSockets } from "../helpers/funcs";
+import { getLocal, incomingSockets, runOnce, storeLocal } from "../helpers/funcs";
 import HybridInput from "./util/HybridInput";
 import { useState, useContext } from 'react';
 
@@ -15,8 +15,8 @@ export default function EntryLogin(props: LoginProps) {
     const { setLoadScreen } = useContext(AppContext);
 
     // auto-login
-    incomingSockets(() => {
-        const prevSessionId = localStorage.getItem('twitterclone-sessionid');
+    runOnce(() => {
+        const prevSessionId = (getLocal('entryData') as EntryData|null)?.sessionId;
         if (prevSessionId) {
             if (setLoadScreen) setLoadScreen(true);
             socket.emit('login', { sessionId: prevSessionId });
@@ -43,12 +43,12 @@ export default function EntryLogin(props: LoginProps) {
 
         socket.on('auto-login-failed', () => {
             if (setLoadScreen) setLoadScreen(false);
-            localStorage.setItem('twitterclone-sessionid', '');
+            storeLocal('sessionid', '');
         })
     })
 
     return <>
-        <div className="text">Sign in to Twitter</div>
+        <div className="text">Sign in to Logger</div>
 
         <div className="reg-office">
             <HybridInput 

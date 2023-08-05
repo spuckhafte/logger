@@ -4,6 +4,11 @@
 
 :root {
     --wordcountcolor: yellow;
+    --scrolltrack: white;
+    --border: #EBEEF0;
+    --bg: white;
+    --color: white;
+    --bghover: #EBEEF0;
 }
 
 body {
@@ -11,6 +16,8 @@ body {
     padding: 0;
     margin: 0;
     overflow: hidden;
+    background-color: var(--bg);
+    color: var(--color);
 }
 
 .home {
@@ -32,7 +39,7 @@ body {
         justify-content:space-between;     
         align-items: end;
 
-        border-right: 0.1px solid;
+        border-right: 0.1px solid var(--border);
 
         > * {
             margin-right: 1rem;
@@ -95,10 +102,10 @@ body {
         }
 
         .user-flake {
-            display: grid;
-            grid-template-areas: "user   more";
-            grid-template-columns: 2fr 1fr;
+            display: flex;
             margin-bottom: 0.5rem;
+            max-width: 12rem;
+            min-width: 12rem;
 
             position: relative;
             cursor: pointer;
@@ -109,42 +116,45 @@ body {
             margin-right: -0.4rem;
 
             .user-flake-main {
-                grid-area: user;
+                width: 80%;
                 display: flex;
+                cursor: default;
 
-                img {
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 100%;
+                .usr-img {
                     margin-right: 10px;
-
-                    transition: 0.2s ease-in-out;
                 }
 
                 .user-details {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
+                    overflow: hidden;
 
                     .display { 
                         font-weight: bold;
                         font-size: small;
+                        @include dotdot;
                     }
                     .username {
                         font-size: smaller;
+                        @include dotdot;
+                        cursor: text;
                     }
                 }
             }
             .fmore {
+                width: 20%;
                 grid-area: more;
                 display: flex;
                 align-items: center;
                 justify-content: end;
                 margin-right: 0.5rem;
+                cursor: default;
 
                 >* {
                     padding: 3px;
                     transition: 0.2s ease-in-out;
+                    cursor: pointer;
                 }   
             }
         }
@@ -152,6 +162,27 @@ body {
 
     .main {
         grid-area: main;
+        border-right: 0.1px solid var(--border);
+
+        .title {
+            font-size: larger;
+            padding-inline: 1rem;
+            padding-block: 0.5rem;
+            font-weight: bold;
+        }
+
+        .all-logs {
+            height: 100%;
+            overflow-y: auto;
+
+            >* {
+                border-bottom: none;
+            }
+            >:last-child {
+                border-bottom: 1px solid var(--border) !important;
+                margin-bottom: 2.5rem;
+            }
+        }
     }
 
     .events {
@@ -395,4 +426,147 @@ body {
         transform: translate(-50%, -50%)
             rotate(360deg);
     }
+}
+
+.hybrid-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+    border: 2px solid $primary-blue;
+
+    &:hover {
+        box-shadow: 0 0 4px 1px $primary-blue;
+    }
+}
+
+.tweet {
+    border: 1px solid var(--border);
+    border-left: none;
+    border-right: none;
+    margin-bottom: 1px;
+
+    display: flex;
+    padding-inline: 0.8rem;
+    padding-block: 0.5rem;
+
+    &:hover {
+        background-color: var(--bghover );
+    }
+
+    .user-pfp {
+        width: 10%;
+        min-width: 3rem;
+        img {
+            border: none !important;
+        }
+    }
+
+    .tweet-body {
+        width: 100%;
+
+        .names-nd-time {
+            display: flex;
+            margin-bottom: 0.3rem;
+
+            >:not(:last-child) {
+                margin-right: 0.3rem;
+            }
+            >:not(:first-child) {
+                color: lighten($color: $dark5, $amount: 5)
+            }
+            .display {
+                max-width: 10rem;
+                font-weight: bold;
+                @include dotdot;
+            }
+            .username {
+                max-width: 10rem;
+                @include dotdot;
+                &::before {
+                    content: "@";
+                }
+            }
+        }
+
+        .text {
+            word-break: break-word;
+        }
+
+        .hashtag {
+            margin-top: 0.3rem;
+            font-size: 15px;
+            color: $green;
+            &::before { 
+                content: '#';
+            }
+            width: fit-content;
+            cursor: pointer;
+            &:hover {
+                text-decoration-line: underline;
+            }
+        }        
+    }
+    
+    .like {
+        @include no-select;
+        width: 5%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        
+        .heart {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: large;
+
+            &:hover {
+                svg {
+                    fill: $heart;
+                }
+            }
+
+            .liked {
+                color: $heart;
+            }
+            svg {
+                transition: 0.2s ease-in-out;
+                fill: $dark5;
+            }
+        }
+        .count {
+            font-size: small;
+            color: $heart
+        }
+    }
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+::-webkit-scrollbar-track {
+    background: var(--scrolltrack);
+}
+::-webkit-scrollbar-thumb {
+    background: #1DA1F2;
+}
+
+a {
+    color: $primary-blue;
+    text-decoration-line: none;
+    &:hover {
+        text-decoration-line: underline;
+        color: darken($color: $primary-blue, $amount: 5);
+    }
+}
+
+p {
+    margin: 0;
+    padding: 0;
 }

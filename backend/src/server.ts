@@ -5,9 +5,11 @@ import { AuthData, LoginData } from '../../types.js';
 import AuthorizeUser from "./helpers/auth.js";
 import mongoose from "mongoose";
 import LoginUser from "./helpers/login.js";
+import SendLogs from "./helpers/sendLogs.js";
 
 dotenv.config();
 const io = new Server({ cors: { origin: "*" } });
+
 
 io.on("connection", socket => {
     socket.on('signup-verify', async (data: AuthData) => {
@@ -16,7 +18,11 @@ io.on("connection", socket => {
 
     socket.on('login', async (data: LoginData) => {
         await LoginUser(data, socket);
-    })
+    });
+
+    socket.on('get-logs', async (sessionId: string, lastLogId: string | null) => {
+        await SendLogs(sessionId, lastLogId, socket);
+    });
 });
 
 async function Init() {

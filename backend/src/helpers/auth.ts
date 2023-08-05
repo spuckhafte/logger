@@ -1,8 +1,8 @@
 import { Socket } from "socket.io";
-import { AuthData } from "../../../types";
+import { AuthData, EntryData } from "../../../types";
 import { sendMail } from "./mail.js";
 import Users from "../schema/Users.js";
-import { sha } from "./funcs.js";
+import { getPfp, sha } from "./funcs.js";
 
 export default async function AuthorizeUser(userData: AuthData, socket: Socket) {
     let alreadyExistingUser = await Users.findOne({ email: userData.email });
@@ -55,13 +55,21 @@ export default async function AuthorizeUser(userData: AuthData, socket: Socket) 
 
         await Users.create({
             ...userData,
+            displayName: userData.username,
             sessionId: {
                 id: sessionId,
-                setAt: Date.now().toString()
-            }
+                setAt: Date.now().toString(),
+            },
+            pfp: getPfp(userData.username)
         });
 
-        socket.emit('entry-ok', sessionId);
+        socket.emit('entry-ok', {
+            username: userData.username,
+            displayName: userData.username,
+            email: userData.email, 
+            sessionId,
+            pfp: getPfp(userData.username)
+        } as EntryData);
     });
     return true;
 }

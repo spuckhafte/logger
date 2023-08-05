@@ -30,7 +30,13 @@ export default function LoginUser(userData, socket) {
                 newSessionId = (_b = user.sessionId) === null || _b === void 0 ? void 0 : _b.id;
             user.lastActive = Date.now().toString();
             yield user.save();
-            socket.emit('entry-ok', newSessionId);
+            socket.emit('entry-ok', {
+                username,
+                email: user.email,
+                sessionId: newSessionId,
+                displayName: user.displayName,
+                pfp: user.pfp
+            });
         }
         else {
             const user = yield Users.findOne({ 'sessionId.id': sessionId });
@@ -40,7 +46,13 @@ export default function LoginUser(userData, socket) {
             else {
                 user.lastActive = Date.now().toString();
                 yield user.save();
-                socket.emit('entry-ok', (_d = user === null || user === void 0 ? void 0 : user.sessionId) === null || _d === void 0 ? void 0 : _d.id);
+                socket.emit('entry-ok', {
+                    username: user.username,
+                    email: user.email,
+                    sessionId: (_d = user.sessionId) === null || _d === void 0 ? void 0 : _d.id,
+                    displayName: user.displayName,
+                    pfp: user.pfp
+                });
             }
         }
     });

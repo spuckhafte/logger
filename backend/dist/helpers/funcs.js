@@ -6,3 +6,6 @@ export function sha(string) {
 export function sessionExpired(setAt) {
     return +setAt + EXPIRY < Date.now();
 }
+export function getPfp(username) {
+    return `https://avatars.dicebear.com/api/bottts/${username}.png`;
+}

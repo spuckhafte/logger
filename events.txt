@@ -12,12 +12,19 @@ verify-otp (server)
 verified (client)
 
 entry-ok (server)
-    -sessionId
+    -userdata :: EntryData
 
 login (client)
-    -userdata :: (name, pwd) || (sessionId)
+    -userdata :: LoginData
 
 login-failed (server)
     -[invalid credentials]
 
 auto-login-failed (server)
+
+get-logs (client)
+    -sessionId
+    -lastLogsId
+
+parsed-logs (server)
+    -requestedLogs :: ALog[]

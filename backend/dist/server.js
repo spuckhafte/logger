@@ -13,6 +13,7 @@ import { InitMailer } from "./helpers/mail.js";
 import AuthorizeUser from "./helpers/auth.js";
 import mongoose from "mongoose";
 import LoginUser from "./helpers/login.js";
+import SendLogs from "./helpers/sendLogs.js";
 dotenv.config();
 const io = new Server({ cors: { origin: "*" } });
 io.on("connection", socket => {
@@ -21,6 +22,9 @@ io.on("connection", socket => {
     }));
     socket.on('login', (data) => __awaiter(void 0, void 0, void 0, function* () {
         yield LoginUser(data, socket);
+    }));
+    socket.on('get-logs', (sessionId, lastLogId) => __awaiter(void 0, void 0, void 0, function* () {
+        yield SendLogs(sessionId, lastLogId, socket);
     }));
 });
 function Init() {
