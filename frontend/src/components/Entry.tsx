@@ -55,8 +55,8 @@ export default () => {
                 <div className='alter-entry'>
                     {
                         entryType == 'log' 
-                        ? "Have an account already? "
-                        : "Don't have an account? "
+                        ? "Don't have an account? "
+                        : "Have an account already? "
                     }
                     <span className='alter-action' onClick={handleEntryAlter}>
                         {entryType == 'log' ? 'Sign up' : 'Sign in'}
