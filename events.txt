@@ -28,3 +28,17 @@ get-logs (client)
 
 parsed-logs (server)
     -requestedLogs :: ALog[]
+
+publish-log (client)
+    -log :: PublishLog
+
+new-log (server) -> broadcast
+    -log :: ALog
+    -me
+
+log-liked (client)
+    -log :: LikeLog
+
+update-like (server) -> broadcast
+    -id
+    -totalLikes

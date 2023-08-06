@@ -17,9 +17,11 @@ export default function EntrySignup(props: Props) {
     const [signupName, setSignupName] = useState('');
     const [signupPassword, setSignupPassword] = useState('');
 
-    const { setLoadScreen } = useContext(AppContext);
+    const { setLoadScreen, lightTheme, setLightTheme } = useContext(AppContext);
 
     const otpFromServer = useRef<string>();
+    
+    if (setLightTheme && lightTheme) setLightTheme(false);
 
     function handleFormSubmit() {
         if (!EmailValidator.validate(signupMail)) {

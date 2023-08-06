@@ -14,6 +14,8 @@ import AuthorizeUser from "./helpers/auth.js";
 import mongoose from "mongoose";
 import LoginUser from "./helpers/login.js";
 import SendLogs from "./helpers/sendLogs.js";
+import { Publish } from "./helpers/publish.js";
+import { Like } from "./helpers/like.js";
 dotenv.config();
 const io = new Server({ cors: { origin: "*" } });
 io.on("connection", socket => {
@@ -25,6 +27,12 @@ io.on("connection", socket => {
     }));
     socket.on('get-logs', (sessionId, lastLogId) => __awaiter(void 0, void 0, void 0, function* () {
         yield SendLogs(sessionId, lastLogId, socket);
+    }));
+    socket.on('publish-log', (myLog) => __awaiter(void 0, void 0, void 0, function* () {
+        yield Publish(myLog, socket);
+    }));
+    socket.on('log-liked', (likeLog) => __awaiter(void 0, void 0, void 0, function* () {
+        yield Like(likeLog, socket);
     }));
 });
 function Init() {

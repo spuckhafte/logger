@@ -1,0 +1,55 @@
+@mixin newLog {
+    @include abs-center;
+    width: 20rem !important;
+    height: 22.5rem;
+
+    .content {
+        .title {
+            margin-bottom: 1rem;
+        }
+        .new-log-text {
+            height: 13rem !important;
+            margin-bottom: 0.3rem;
+
+            textarea {
+                -ms-overflow-style: none;  /* Internet Explorer 10+ */
+                scrollbar-width: none;  /* Firefox */
+                &::-webkit-scrollbar { 
+                    display: none;  /* Safari and Chrome */
+                }
+            }
+        }
+        .new-tag {
+            display: flex;
+            width: 100%;
+
+            .tag-symbol {
+                width: 10%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: var(--bghover);
+                cursor: default;
+                @include no-select;
+
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+            }
+            .new-tag-text {
+                width: 90%;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-left: none;
+            }
+        }
+
+        .create-new-log-btn {
+            @include std-btn;
+            background-color: $primary-blue;
+            color: var(--color);
+            &:hover {
+                background-color: darken($color: $primary-blue, $amount: 10);
+            }
+        }
+    }
+}

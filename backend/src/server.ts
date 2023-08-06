@@ -1,11 +1,13 @@
 import { Server } from "socket.io";
 import dotenv from "dotenv";
 import { InitMailer } from "./helpers/mail.js";
-import { AuthData, LoginData } from '../../types.js';
+import { AuthData, LikeLog, LoginData, PublishLog } from '../../types.js';
 import AuthorizeUser from "./helpers/auth.js";
 import mongoose from "mongoose";
 import LoginUser from "./helpers/login.js";
 import SendLogs from "./helpers/sendLogs.js";
+import { Publish } from "./helpers/publish.js";
+import { Like } from "./helpers/like.js";
 
 dotenv.config();
 const io = new Server({ cors: { origin: "*" } });
@@ -22,6 +24,14 @@ io.on("connection", socket => {
 
     socket.on('get-logs', async (sessionId: string, lastLogId: string | null) => {
         await SendLogs(sessionId, lastLogId, socket);
+    });
+
+    socket.on('publish-log', async (myLog: PublishLog) => {
+        await Publish(myLog, socket);
+    });
+
+    socket.on('log-liked', async (likeLog: LikeLog) => {
+        await Like(likeLog, socket);
     });
 });
 

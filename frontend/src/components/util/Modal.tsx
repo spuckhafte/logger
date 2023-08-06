@@ -15,6 +15,7 @@ type ModalProps = {
     placeholder?: string
     max?: number
     btnText?: string
+    blur?:boolean
 }
 export default function Modal(props: ModalProps) {
     const { title, setInputReturn, className } = props;
@@ -33,7 +34,7 @@ export default function Modal(props: ModalProps) {
         }
     }
 
-    return <div className="external-modal-screen" onClick={closeModal}>
+    return <div className={"external-modal-screen " + (props.blur ? "backdrop-blur" : "")} onClick={closeModal}>
             <div className={`external-modal ${className}`}>
             <div className="title">{title}</div>
             {

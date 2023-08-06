@@ -12,7 +12,7 @@ export default function EntryLogin(props: LoginProps) {
     const [loginName, setLoginName] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
 
-    const { setLoadScreen } = useContext(AppContext);
+    const { setLoadScreen, setLightTheme, lightTheme } = useContext(AppContext);
 
     // auto-login
     runOnce(() => {
@@ -20,6 +20,8 @@ export default function EntryLogin(props: LoginProps) {
         if (prevSessionId) {
             if (setLoadScreen) setLoadScreen(true);
             socket.emit('login', { sessionId: prevSessionId });
+        } else {
+            if (setLightTheme && lightTheme) setLightTheme(false);
         }
     });
 
@@ -37,12 +39,14 @@ export default function EntryLogin(props: LoginProps) {
     incomingSockets(() => {
         socket.on('login-failed', reason => {
             if (setLoadScreen) setLoadScreen(false);
+            if (setLightTheme && lightTheme) setLightTheme(false);
             props.setErrorReason(reason);
             props.setShowErrorModal(true);
         });
 
         socket.on('auto-login-failed', () => {
             if (setLoadScreen) setLoadScreen(false);
+            if (setLightTheme && lightTheme) setLightTheme(false);
             storeLocal('sessionid', '');
         })
     })

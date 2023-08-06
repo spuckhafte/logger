@@ -3,15 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Brand from '../../public/logo.png';
 import { useContext, useState, useRef } from "react";
 import { AppContext } from "../App";
-import { getLocal, storeLocal } from "../helpers/funcs";
+import { getLocal, storeLocal, storeTemp } from "../helpers/funcs";
 import { EntryData } from "../../../types";
 import HybridImg from "./util/HybridImg";
 
 export default () => {
-    const { lightTheme } = useContext(AppContext);
+    const { lightTheme, setNewLogScreen } = useContext(AppContext);
     const [showMore, setShowMore] = useState(false);
 
     const { username, displayName, pfp } = getLocal('entryData') as EntryData;
+
+    if (!setNewLogScreen) return;
 
     function onOver(e:React.MouseEvent<HTMLDivElement, MouseEvent>, veryDark=false) {
         let dark = veryDark ? "#1C2733" : "#283340";
@@ -85,7 +87,7 @@ export default () => {
                     : "" 
             }
 
-            <button>Log</button>
+            <button onClick={() => setNewLogScreen(prev => !prev)}>Log</button>
         </div>
 
         <div className="user-flake" onMouseOver={onOver} onMouseLeave={onLeave}>
@@ -104,6 +106,7 @@ export default () => {
                 <FontAwesomeIcon icon={faEllipsis} />
             </div>
         </div>
+
     </nav>
 }
 
@@ -133,6 +136,7 @@ function MoreWindow(props: {
 
     function logout() {
         storeLocal('entryData', '');
+        storeTemp('newLogText', '')
         location.reload();
     }
 

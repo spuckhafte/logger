@@ -1,12 +1,14 @@
 import Linkify from 'react-linkify';
 import HybridImg from "./HybridImg";
 import MdParser from 'react-markdown';
-import { urlRegex } from '../../helpers/funcs';
+import { getLocal, urlRegex } from '../../helpers/funcs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import millify from 'millify';
 import prettyMilliseconds from 'pretty-ms';
+import { socket } from '../../App';
+import { EntryData, LikeLog } from '../../../../types';
 
 type TweetProps = {
     text: string,
@@ -22,6 +24,7 @@ type TweetProps = {
 
 export default function LogEl(props:TweetProps) {
     let { text, src, displayname, username, when, id, liked, totalLikes, hashtag } = props;
+    const { sessionId } = getLocal('entryData') as EntryData; 
 
     const isMd = text.toLowerCase().startsWith('<md>');
     if (isMd) text = text.replace('<md>', '');
@@ -30,10 +33,16 @@ export default function LogEl(props:TweetProps) {
     if (isRaw) text = text.replace('<raw>', '');
 
     const [like, setLike] = useState(liked);
-    const [likeCount, setLikeCount] = useState(totalLikes ?? 0);
 
-    function tweetLiked() {
-        setLikeCount(prev => prev + (like ? -1 : 1));
+    function logLiked(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        const likeLogData = { 
+            id: e.currentTarget.id, 
+            sessionId: sessionId ?? "",
+            action: like ? "minus" : "plus"
+        } as LikeLog;
+
+        socket.emit('log-liked', likeLogData);
+
         setLike(!like);
     }
 
@@ -59,11 +68,11 @@ export default function LogEl(props:TweetProps) {
             <div className="hashtag">{hashtag}</div>
         </div>
         <div className="like">
-            <div className='heart' onClick={tweetLiked}>
+            <div className='heart' onClick={logLiked} id={id}>
                 { like ? <FontAwesomeIcon className='liked' icon={faHeart} /> : <RegularHeart /> }
             </div>
 
-            <div className="count">{millify(likeCount)}</div>
+            <div className="count">{millify(totalLikes)}</div>
         </div>
     </div>
 }

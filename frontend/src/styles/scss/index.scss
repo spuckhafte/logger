@@ -1,6 +1,7 @@
 @import "_vars";
 @import "_entry";
 @import "_mixins";
+@import "_newLog";
 
 :root {
     --wordcountcolor: yellow;
@@ -9,6 +10,8 @@
     --bg: white;
     --color: white;
     --bghover: #EBEEF0;
+    --modalBg: white;
+    --hybridTextPlaceholder: #3A444C;
 }
 
 body {
@@ -23,7 +26,7 @@ body {
 .home {
     display: grid;
     grid-template-areas: "navbar    main    events";
-    grid-template-columns: 1.2fr 3fr 1.5fr;
+    grid-template-columns: 0.6fr 3fr 0.8fr;
 
     > * { height: 100vh }
 
@@ -33,8 +36,6 @@ body {
 
         display: flex;
         flex-direction: column;
-
-        margin-left: 2em;
 
         justify-content:space-between;     
         align-items: end;
@@ -281,7 +282,7 @@ body {
 .hybrid-input {
     font-family: 'Inter', sans-serif;
     height: 3rem;
-    border: 1px solid $dark3;
+    border: 2px solid var(--border);
     border-radius: 5px;
     font-size: 17px;
     
@@ -295,20 +296,34 @@ body {
         justify-content: start;
         align-items: center;
         padding-left: 0.8rem;
-        color: $dark4;
+        color: var(--hybridTextPlaceholder);
         cursor: text;
         transition: 0.2s;
         @include no-select;
     }
     input {
         background-color: transparent;
-        color: white;
+        color: var(--color);
         font-size: 18px;
         outline: none;
         border: none;
         height: 0%;
         padding-left: 0.8rem;
         transform: none;
+    }
+
+    textarea {
+        background-color: transparent;
+        color: var(--color);
+        font-size: 18px;
+        outline: none;
+        border: none;
+        height: 0%;
+        padding-left: 0.8rem;
+        transform: none;
+        font-family: 'Inter', sans-serif;
+        resize: none;
+        overflow-y: hidden;
     }
 
     .dont-move-blur {
@@ -357,6 +372,12 @@ body {
         border-color: $primary-blue;
         height: 70%;
     }
+
+    textarea {
+        border-color: $primary-blue;
+        height: 70%;
+        overflow-y: auto;
+    }
 }
 
 .external-modal-screen {
@@ -365,12 +386,13 @@ body {
     height: 100vh;
     backdrop-filter: blur(10px);
     background-color: rgba(0, 0, 0, 0.596);
+    z-index: 1;
 
     .external-modal {
         @include abs-center;
         width: 15rem;
         padding: 2.5rem;
-        background-color: black;
+        background-color: var(--modalBg);
         box-shadow: 0px 0px 15px 2px $primary-blue;
         border-radius: 2rem;    
         .title {
@@ -396,7 +418,7 @@ body {
     background-color: rgba(0, 0, 0, 0.767);
     width: 100%;
     height: 100vh;
-    z-index: 9990;
+    z-index: 1001;
 
     .loader-path {
         @include abs-center;
@@ -404,7 +426,6 @@ body {
         height: 80px;
         border: 3px solid white;
         border-radius: 100%;
-        z-index: 1000;
     }
 
     .loader-tail {
@@ -413,7 +434,6 @@ body {
         height: 80px;
         border-top: 6px solid $primary-blue;
         border-radius: 100%;
-        z-index: 10001;
         animation: bufferLoader 0.3s linear infinite;
     }
 }
@@ -457,7 +477,7 @@ body {
     }
 
     .user-pfp {
-        width: 10%;
+        width: 5%;
         min-width: 3rem;
         img {
             border: none !important;
@@ -547,6 +567,10 @@ body {
     }
 }
 
+.create-new-log {
+    @include newLog;
+}
+
 ::-webkit-scrollbar {
     width: 5px;
 }
@@ -569,4 +593,13 @@ a {
 p {
     margin: 0;
     padding: 0;
+}
+
+b {
+    color: lighten($color: red, $amount: 10);
+    @include no-select;
+}
+
+.backdrop-blur {
+    backdrop-filter: blur(8px);
 }

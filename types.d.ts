@@ -32,3 +32,15 @@ export type ALog = {
 
     when: string,
 }
+
+export type PublishLog = {
+    text: string,
+    hashtag: string,
+    sessionId: string
+}
+
+export type LikeLog = {
+    id: string,
+    sessionId: string,
+    action: "plus" | "minus"
+}
