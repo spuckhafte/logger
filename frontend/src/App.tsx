@@ -6,7 +6,6 @@ import EntryModal from './components/Entry';
 import { io } from 'socket.io-client';
 import NewLog from './components/NewLog';
 
-dotenv.config();
 export const socket = io("https://logger-server.onrender.com");
 
 export const AppContext = createContext<{ 
