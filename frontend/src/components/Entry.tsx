@@ -5,6 +5,7 @@ import Modal from './util/Modal';
 import { AppContext, socket } from '../App';
 import { incomingSockets, storeLocal } from '../helpers/funcs';
 import { EntryData } from '../../../types';
+import Brand from '../../public/logo.png';
 
 
 export default () => {
@@ -36,7 +37,7 @@ export default () => {
     return (
         <div className="entry-page">
             <div className="entry">
-                <img src="../../public/logo.png" alt="logo" />
+                <img src={Brand} alt="logo" />
                 {
                     entryType === 'log' 
                     ? <EntryLogin
