@@ -6,7 +6,12 @@ import EntryModal from './components/Entry';
 import { io } from 'socket.io-client';
 import NewLog from './components/NewLog';
 
-export const socket = io("https://logger-server.onrender.com");
+const SERVER = {
+    dev: "http://localhost:3000",
+    production: "https://logger-server.onrender.com"
+}
+
+export const socket = io(SERVER.dev);
 
 export const AppContext = createContext<{ 
   lightTheme?:boolean, 

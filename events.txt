@@ -28,6 +28,7 @@ get-logs (client)
 
 parsed-logs (server)
     -requestedLogs :: ALog[]
+    -isLastLog
 
 publish-log (client)
     -log :: PublishLog

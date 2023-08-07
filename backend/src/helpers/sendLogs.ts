@@ -4,14 +4,16 @@ import Users from "../schema/Users.js";
 import { ALog } from "../../../types";
 
 export default async function SendLogs(sessionId: string, lastLogId: string|null, socket: Socket) {
-    const allLogs = await Logs.find({});
+    const allLogs = await Logs.find({}).sort({ 'createdAt': -1 });
     const user = await Users.findOne({ 'sessionId.id': sessionId });
 
     let from = 0;
 
-    if (!lastLogId) {
-        from = allLogs.findIndex(aLog => aLog.id == lastLogId) + 1;
+    if (lastLogId) {
+        from = allLogs.findIndex(aLog => aLog.uid == lastLogId) + 1;
     }
+
+    const isLastLog = (from + 10) >= (allLogs.length - 1);
 
     const reqLogs = await Promise.all(allLogs.splice(from, 10).map(async log => {
         const author = await Users.findOne({ uid: log.author });
@@ -31,5 +33,5 @@ export default async function SendLogs(sessionId: string, lastLogId: string|null
         }
     })) as ALog[];
 
-    socket.emit('parsed-logs', reqLogs);
+    socket.emit('parsed-logs', reqLogs, isLastLog);
 }

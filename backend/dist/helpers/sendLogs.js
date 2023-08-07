@@ -11,12 +11,13 @@ import Logs from "../schema/Logs.js";
 import Users from "../schema/Users.js";
 export default function SendLogs(sessionId, lastLogId, socket) {
     return __awaiter(this, void 0, void 0, function* () {
-        const allLogs = yield Logs.find({});
+        const allLogs = yield Logs.find({}).sort({ 'createdAt': -1 });
         const user = yield Users.findOne({ 'sessionId.id': sessionId });
         let from = 0;
-        if (!lastLogId) {
-            from = allLogs.findIndex(aLog => aLog.id == lastLogId) + 1;
+        if (lastLogId) {
+            from = allLogs.findIndex(aLog => aLog.uid == lastLogId) + 1;
         }
+        const isLastLog = (from + 10) >= (allLogs.length - 1);
         const reqLogs = yield Promise.all(allLogs.splice(from, 10).map((log) => __awaiter(this, void 0, void 0, function* () {
             var _a, _b, _c;
             const author = yield Users.findOne({ uid: log.author });
@@ -32,6 +33,6 @@ export default function SendLogs(sessionId, lastLogId, socket) {
                 when: log.createdAt,
             };
         })));
-        socket.emit('parsed-logs', reqLogs);
+        socket.emit('parsed-logs', reqLogs, isLastLog);
     });
 }
