@@ -1,4 +1,4 @@
-import { useState, useContext, useRef, useEffect } from "react";
+import { useState, useContext, useRef } from "react";
 import { ALog, EntryData } from "../../../types";
 import { getLocal, incomingSockets, runOnce } from "../helpers/funcs";
 import { AppContext, socket } from "../App";

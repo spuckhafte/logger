@@ -11,7 +11,7 @@ const SERVER = {
     production: "https://logger-server.onrender.com"
 }
 
-export const socket = io(SERVER.dev);
+export const socket = io(SERVER.production);
 
 export const AppContext = createContext<{ 
   lightTheme?:boolean, 
