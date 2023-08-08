@@ -1,6 +1,11 @@
 # Logger
 *...🔨 (under development)*
 
+**Note: design is only desktop friendly for now :)**
+
+## How to run (production)
+### [Logger website](https://loggerapp.netlify.app)
+
 ## How to run (dev)
 1. Clone the repo: 
 ```bash
