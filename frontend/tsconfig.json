@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/components/HomeNav.tsx", "src/hooks"],
+  "include": ["src", "src/Components/Standalone/Navbar.tsx", "src/hooks"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

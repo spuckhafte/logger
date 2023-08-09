@@ -2,6 +2,7 @@
 @import "_entry";
 @import "_mixins";
 @import "_newLog";
+@import "_navbar";
 
 :root {
     --wordcountcolor: yellow;
@@ -23,189 +24,50 @@ body {
     color: var(--color);
 }
 
+.the-app {
+    display: flex;
+}
+
+.navbar {
+    @include navbar;
+}
+
 .home {
+    width: 100%;
     display: grid;
-    grid-template-areas: "navbar    main    events";
-    grid-template-columns: 0.6fr 3fr 0.8fr;
+    grid-template-areas: "main    events";
+    grid-template-columns: 4fr 1fr;
 
     > * { height: 100vh }
-
-    .navbar {
-        grid-area: navbar;
-        height: 100%;
-
-        display: flex;
-        flex-direction: column;
-
-        justify-content:space-between;     
-        align-items: end;
-
-        border-right: 0.1px solid var(--border);
-
-        > * {
-            margin-right: 1rem;
-        }
-
-        padding-right: 1.5rem;
-
-        .routes {
-            .branding img {
-                margin-left: 10px;
-                height: 40px;
-                margin-top: 0.5rem ;
-
-                &:hover {
-                    animation: logo-hover infinite 2s;
-                    transition: all ease-in-out;
-                }
-            }
-
-            >:not(:first-child) {
-                width: fit-content;
-                padding: 1rem;
-
-                font-size: 20px;
-                font-weight: bold;
-
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                border-radius: 9999px;
-                
-                .icon { 
-                    height: 25px;
-                    margin-right: 1.5rem;
-                }
-                
-            }
-
-            .rhome .icon {
-                margin-right: 1.2rem !important;
-            }
-
-            button {
-                outline: none;
-                border: none;
-                background-color: $primary_blue;
-                color: white;
-                font-size: 18px !important;
-                margin-left: 15px;
-                width: 100% !important;
-                border-radius: 9999px;
-                transition: 0.2s ease-in-out;
-                margin-top: 1.5rem;
-
-                &:hover {
-                    background-color: darken($color: $primary_blue, $amount: 5) !important;
-                }
-            }
-        }
-
-        .user-flake {
-            display: flex;
-            margin-bottom: 0.5rem;
-            max-width: 12rem;
-            min-width: 12rem;
-
-            position: relative;
-            cursor: pointer;
-
-            padding: 0.5rem;
-            border-radius: 100px;
-            margin-bottom: 0.1rem;
-            margin-right: -0.4rem;
-
-            .user-flake-main {
-                width: 80%;
-                display: flex;
-                cursor: default;
-
-                .usr-img {
-                    margin-right: 10px;
-                }
-
-                .user-details {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    overflow: hidden;
-
-                    .display { 
-                        font-weight: bold;
-                        font-size: small;
-                        @include dotdot;
-                    }
-                    .username {
-                        font-size: smaller;
-                        @include dotdot;
-                        cursor: text;
-                    }
-                }
-            }
-            .fmore {
-                width: 20%;
-                grid-area: more;
-                display: flex;
-                align-items: center;
-                justify-content: end;
-                margin-right: 0.5rem;
-                cursor: default;
-
-                >* {
-                    padding: 3px;
-                    transition: 0.2s ease-in-out;
-                    cursor: pointer;
-                }   
-            }
-        }
-    }
 
     .main {
         grid-area: main;
         border-right: 0.1px solid var(--border);
-
-        .title {
-            font-size: larger;
-            padding-inline: 1rem;
-            padding-block: 0.5rem;
-            font-weight: bold;
-        }
-
-        .all-logs {
-            height: 100%;
-            overflow-y: auto;
-
-            >* {
-                border-bottom: none;
-            }
-            >:last-child {
-                border-bottom: 1px solid var(--border) !important;
-                margin-bottom: 3rem;
-            }
-
-            .load-more-logs {
-                height: 2rem;
-
-                .loader {
-                    width: 15px;
-                    height: 15px;
-                    @include rel-center;
-
-                    border-left: 1px solid var(--color);
-                    border-top: 1px solid var(--color);
-                    border-radius: 100%;
-
-                    animation: bufferLoader 0.3s linear infinite; 
-                }
-            }
-        }
     }
 
     .events {
         grid-area: events;
     }
 }
+
+.a-hashtag {
+    width: 100%;
+    display: grid;
+    grid-template-areas: "main    description";
+    grid-template-columns: 4fr 1fr;
+
+    > * { height: 100vh }
+
+    .main {
+        grid-area: main;
+        border-right: 0.1px solid var(--border);
+    }
+
+    .topic-about {
+        grid-area: description;
+    }
+}
+
 
 .more-window {
     position: relative;
@@ -585,6 +447,45 @@ body {
 
 .create-new-log {
     @include newLog;
+}
+
+.all-logs-title {
+    font-size: larger;
+    padding-inline: 1rem;
+    padding-block: 0.5rem;
+    font-weight: bold;
+}
+.all-logs-title-hastag {
+    color: $green;
+    &::before { content: "#"; };
+}
+.all-logs {
+    height: 100%;
+    overflow-y: auto;
+
+    >* {
+        border-bottom: none;
+    }
+    >:last-child {
+        border-bottom: 1px solid var(--border) !important;
+        margin-bottom: 3rem;
+    }
+
+    .load-more-logs {
+        height: 2rem;
+
+        .loader {
+            width: 15px;
+            height: 15px;
+            @include rel-center;
+
+            border-left: 1px solid var(--color);
+            border-top: 1px solid var(--color);
+            border-radius: 100%;
+
+            animation: bufferLoader 0.3s linear infinite; 
+        }
+    }
 }
 
 ::-webkit-scrollbar {

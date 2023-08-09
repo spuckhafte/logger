@@ -1,0 +1,131 @@
+@mixin navbar {
+    left: 0;
+
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content:space-between;     
+    align-items: end;
+
+    border-right: 0.1px solid var(--border);
+
+    > * {
+        margin-right: 1rem;
+    }
+
+    padding-right: 1.5rem;
+
+    .routes {
+        .branding img {
+            margin-left: 10px;
+            height: 40px;
+            margin-top: 0.5rem ;
+
+            &:hover {
+                animation: logo-hover infinite 2s;
+                transition: all ease-in-out;
+            }
+        }
+
+        >:not(:first-child) {
+            width: fit-content;
+            padding: 1rem;
+
+            font-size: 20px;
+            font-weight: bold;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 9999px;
+            
+            .icon { 
+                height: 25px;
+                margin-right: 1.5rem;
+            }
+            
+        }
+
+        .rhome .icon {
+            margin-right: 1.2rem !important;
+        }
+
+        button {
+            outline: none;
+            border: none;
+            background-color: $primary_blue;
+            color: white;
+            font-size: 18px !important;
+            margin-left: 15px;
+            width: 100% !important;
+            border-radius: 9999px;
+            transition: 0.2s ease-in-out;
+            margin-top: 1.5rem;
+
+            &:hover {
+                background-color: darken($color: $primary_blue, $amount: 5) !important;
+            }
+        }
+    }
+
+    .user-flake {
+        display: flex;
+        margin-bottom: 0.5rem;
+        max-width: 12rem;
+        min-width: 12rem;
+
+        position: relative;
+        cursor: pointer;
+
+        padding: 0.5rem;
+        border-radius: 100px;
+        margin-bottom: 0.1rem;
+        margin-right: -0.4rem;
+
+        .user-flake-main {
+            width: 80%;
+            display: flex;
+            cursor: default;
+
+            .usr-img {
+                margin-right: 10px;
+            }
+
+            .user-details {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                overflow: hidden;
+
+                .display { 
+                    font-weight: bold;
+                    font-size: small;
+                    @include dotdot;
+                }
+                .username {
+                    font-size: smaller;
+                    @include dotdot;
+                    cursor: text;
+                }
+            }
+        }
+        .fmore {
+            width: 20%;
+            grid-area: more;
+            display: flex;
+            align-items: center;
+            justify-content: end;
+            margin-right: 0.5rem;
+            cursor: default;
+
+            >* {
+                padding: 3px;
+                transition: 0.2s ease-in-out;
+                cursor: pointer;
+            }   
+        }
+    }
+}

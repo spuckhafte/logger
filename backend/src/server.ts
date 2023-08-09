@@ -2,16 +2,15 @@ import { Server } from "socket.io";
 import dotenv from "dotenv";
 import { InitMailer } from "./helpers/mail.js";
 import { AuthData, LikeLog, LoginData, PublishLog } from '../../types.js';
-import AuthorizeUser from "./helpers/auth.js";
+import AuthorizeUser from "./events/auth.js";
 import mongoose from "mongoose";
-import LoginUser from "./helpers/login.js";
-import SendLogs from "./helpers/sendLogs.js";
-import { Publish } from "./helpers/publish.js";
-import { Like } from "./helpers/like.js";
+import LoginUser from "./events/login.js";
+import SendLogs from "./events/sendLogs.js";
+import { Publish } from "./events/publish.js";
+import { Like } from "./events/like.js";
 
 dotenv.config();
-const io = new Server({ cors: { origin: "*" } });
-
+export const io = new Server({ cors: { origin: "*" } });
 
 io.on("connection", socket => {
     socket.on('signup-verify', async (data: AuthData) => {
@@ -22,8 +21,8 @@ io.on("connection", socket => {
         await LoginUser(data, socket);
     });
 
-    socket.on('get-logs', async (sessionId: string, lastLogId: string | null) => {
-        await SendLogs(sessionId, lastLogId, socket);
+    socket.on('get-logs', async (sessionId: string, lastLogId: string | null, filterTag: string|null) => {
+        await SendLogs(sessionId, lastLogId, filterTag, socket);
     });
 
     socket.on('publish-log', async (myLog: PublishLog) => {

@@ -1,10 +1,13 @@
 import { Route, Routes } from 'react-router-dom';          
 import { createContext, useEffect, useState } from 'react';      
-import Home from './components/Home';
-import useLS from './hooks/useLS';
-import EntryModal from './components/Entry';
+import Home from './Components/Routes/Home/Home';
+import useLS from './Components/Hooks/useLS';
+import EntryModal from './Components/Standalone/Entry';
 import { io } from 'socket.io-client';
-import NewLog from './components/NewLog';
+import NewLog from './Components/Standalone/NewLog';
+import HomeNav from './Components/Standalone/Navbar';
+import Topic from './Components/Routes/Explore/[topic]/[topic]';
+import { incomingSockets, storeLocal } from './Components/Helpers/funcs';
 
 const SERVER = {
     dev: "http://localhost:3000",
@@ -63,6 +66,13 @@ export default function App() {
         );
     }, [lightTheme]);
 
+    incomingSockets(() => {
+        socket.on('session-expired', () => {
+            storeLocal('entryData', '');
+            location.reload();
+        })
+    })
+
     return (
     <AppContext.Provider 
         value={{ 
@@ -84,9 +94,17 @@ export default function App() {
         {
             newLogScreen ? <NewLog /> : ""
         }
-        <Routes>
-            <Route path='/' element={ loggedIn ? <Home /> : <EntryModal /> } />
-        </Routes>
+        {
+            loggedIn
+                ? <main className='the-app'>
+                    <HomeNav />
+                    <Routes>
+                        <Route path='/' element={ <Home /> } />
+                        <Route path='/explore/:topic' element={ <Topic/> }/>
+                    </Routes>
+                </main>
+                : <EntryModal />
+        }
     </AppContext.Provider>
     )
 }

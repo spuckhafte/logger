@@ -22,6 +22,8 @@ login-failed (server)
 
 auto-login-failed (server)
 
+session-expired (server)
+
 get-logs (client)
     -sessionId
     -lastLogsId
@@ -29,6 +31,7 @@ get-logs (client)
 parsed-logs (server)
     -requestedLogs :: ALog[]
     -isLastLog
+    -filterTag?
 
 publish-log (client)
     -log :: PublishLog
@@ -41,5 +44,11 @@ log-liked (client)
     -log :: LikeLog
 
 update-like (server) -> broadcast
-    -id
+    -msgId
     -totalLikes
+    -userId
+    -action
+
+hashtag (client)
+    -topicName
+    -sessionId
