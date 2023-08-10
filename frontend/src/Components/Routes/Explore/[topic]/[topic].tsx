@@ -38,8 +38,9 @@ export default function Topic() {
                 
                 <div className="describe">
                     <div className="info">
-                        <div className="first-log">{firstLog ? pms(+firstLog) : "--"} ago<div className="subhead">first log</div></div>
                         <div className="last-active">{lastActive ? pms(+lastActive) : "--"} ago<div className="subhead">last active</div></div>
+                        <div className="first-log">{firstLog ? pms(+firstLog) : "--"} ago<div className="subhead">first log</div></div>
+                        
                     </div>
                     <div className="stats">
                         <div className="total-logs">{totalLogs ? millify(+totalLogs) : "--"}<div className="subhead">total logs</div></div>
