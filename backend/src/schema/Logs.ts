@@ -12,7 +12,7 @@ const logSchema = new mongoose.Schema({
         type: String,
         default: () => Date.now().toString()
     },
-    author: String, // id,
+    author: String, // uid,
     likes: {
         type: Number,
         default: 0

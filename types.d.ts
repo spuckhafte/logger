@@ -44,3 +44,10 @@ export type LikeLog = {
     sessionId: string,
     action: "plus" | "minus"
 }
+
+export type HashtagInfo = {
+    firstLog: string|null,
+    lastActive: string|null,
+    totalLogs: string|null,
+    myLogs: string|null,
+}

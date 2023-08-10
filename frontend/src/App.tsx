@@ -64,6 +64,10 @@ export default function App() {
             '--hybridTextPlaceholder',
             lightTheme ? "#3A444C" : "#8899A6"
         );
+        document.body.style.setProperty(
+            '--bgsyncblacknwhite',
+            lightTheme ? "#F7F9FA" : "#1C2733"
+        );
     }, [lightTheme]);
 
     incomingSockets(() => {

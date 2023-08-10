@@ -52,3 +52,10 @@ update-like (server) -> broadcast
 hashtag (client)
     -topicName
     -sessionId
+
+get-hashtag-details (client)
+    -topic
+    -sessionId
+
+hashtag-details (server)
+    -hashtagDetails :: HashtagInfo

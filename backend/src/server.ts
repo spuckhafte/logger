@@ -8,6 +8,7 @@ import LoginUser from "./events/login.js";
 import SendLogs from "./events/sendLogs.js";
 import { Publish } from "./events/publish.js";
 import { Like } from "./events/like.js";
+import TopicInfo from "./events/topicInfo.js";
 
 dotenv.config();
 export const io = new Server({ cors: { origin: "*" } });
@@ -31,6 +32,10 @@ io.on("connection", socket => {
 
     socket.on('log-liked', async (likeLog: LikeLog) => {
         await Like(likeLog, socket);
+    });
+
+    socket.on('get-hashtag-details', async (topic: string, sessionId: string) => {
+        await TopicInfo(topic, sessionId, socket);
     });
 });
 

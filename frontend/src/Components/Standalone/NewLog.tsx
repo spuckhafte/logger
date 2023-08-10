@@ -15,7 +15,7 @@ export default function NewLog() {
     const { sessionId } = getLocal('entryData') as EntryData;
 
     const [log, setLog] = useSS('newLogText', '');
-    const [tag, setTag] = useState('');
+    const [tag, setTag] = useState(topic ? topic : "");
     const [showErr, setShowErr] = useState(false);
 
     if (!setNewLogScreen) return;
@@ -52,7 +52,7 @@ export default function NewLog() {
             <HybridInput 
                 type="text" 
                 className="new-tag-text" 
-                value={topic ? topic : tag} 
+                value={tag} 
                 setValue={setTag} 
                 placeholder="Topic"
                 limit={24}

@@ -5,7 +5,7 @@ import { ALog, EntryData } from "../../../../types";
 import LogEl from "./LogEl";
 
 type Props = {
-    heading: string,
+    heading?: string,
     filterTag?: string,
     aHashtag?: boolean
 }
@@ -72,8 +72,18 @@ export default function AllLogs(props: Props) {
     });
 
     return <>
-        <div className={"all-logs-title " + (props.aHashtag ? "all-logs-title-hastag" : "")}>{props.heading}</div>
-        <div className="all-logs" ref={allLogsEl} onScroll={allLogsScrolled}>
+        {
+            props.heading ? 
+                <div className={"all-logs-title " + (props.aHashtag ? "all-logs-title-hastag" : "")}>
+                    {props.heading}
+                </div>
+            : ""
+        }
+        <div 
+            className={"all-logs " + (props.aHashtag ? "all-logs-for-hashtag" : "")} 
+            ref={allLogsEl} 
+            onScroll={allLogsScrolled}
+        >
             {
                 logs.map((newLog, i) => {
                     let El = <LogEl
