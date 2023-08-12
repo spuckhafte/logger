@@ -15,6 +15,8 @@ export default () => {
 
     const { username, displayName, pfp } = getLocal('entryData') as EntryData;
 
+    const { activeNav, changeActiveNav } = useContext(AppContext);
+
     if (!setNewLogScreen) return;
 
     function onOver(e:React.MouseEvent<HTMLDivElement, MouseEvent>, veryDark=false) {
@@ -26,34 +28,18 @@ export default () => {
         e.currentTarget.style.background = "transparent";
     }
 
-    function onNavLinkClick(e:React.MouseEvent<HTMLDivElement, MouseEvent>) 
-    {
-        const siblingCount = e.currentTarget.parentElement?.childElementCount as number;
-        const currentClass = e.currentTarget.classList.item(0) as string;
+    function onNavLinkClick(e:React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        const currentEl = e.currentTarget;
+        const currentClass = currentEl.classList.item(0) as string;
 
         if (currentClass == 'more-window') return;
-
-        if (currentClass == 'rhome') {
-            navigate('/');
-        }
-
-        if (currentClass == 'rprofile') {
-            navigate('/profile');
-        }
 
         if (currentClass == 'rmore') {
             setShowMore(true);
             return;
-        }
+        } else navigate(currentClass.replace('r', ''));
 
-        for (let i = 0; i < siblingCount; i++) {
-            const el = e.currentTarget.parentElement?.children.item(i);
-            if (!el) continue;
-
-            el.classList.remove('active-nav');
-            if (el.classList[0] == currentClass)
-                el.classList.add('active-nav');
-        }
+        if (changeActiveNav) changeActiveNav(currentClass.replace('r', '') as any);
     }
 
     return <nav className="navbar">
@@ -62,27 +48,53 @@ export default () => {
                 <img src={Brand} alt="logger-logo" />
             </main>
 
-            <div className="rhome active-nav" onClick={onNavLinkClick} onMouseOver={onOver} onMouseLeave={onLeave}>
+            <div 
+                className={ "rhome " + (activeNav?.home ? 'active-nav' : "") } 
+                onClick={onNavLinkClick} 
+                onMouseOver={onOver} 
+                onMouseLeave={onLeave}
+            >
                 <FontAwesomeIcon icon={faHome} className="icon" />
                 <span>Home</span>
             </div>
 
-            <div className="rexplore" onClick={onNavLinkClick} onMouseOver={onOver} onMouseLeave={onLeave}>
+            <div 
+                className={ "rexplore " + (activeNav?.explore ? 'active-nav' : "") } 
+                onClick={onNavLinkClick} 
+                onMouseOver={onOver} 
+                onMouseLeave={onLeave}
+            >
                 <FontAwesomeIcon icon={faHashtag} className="icon" />
                 <span>Explore</span>
             </div>
 
-            <div className="rnoti" onClick={onNavLinkClick} onMouseOver={onOver} onMouseLeave={onLeave}>
+            <div 
+                className={ "rnoti " + (activeNav?.noti ? 'active-nav' : "") } 
+                onClick={onNavLinkClick} 
+                onMouseOver={onOver} 
+                onMouseLeave={onLeave}
+            >
                 <FontAwesomeIcon icon={faBell} className="icon" />
                 <span>Notifications</span>
             </div>
 
-            <div className="rprofile" onClick={onNavLinkClick} onMouseOver={onOver} onMouseLeave={onLeave}>
+            <div 
+                className={ "rprofile " + (activeNav?.profile ? 'active-nav' : "") } 
+                onClick={onNavLinkClick} 
+                onMouseOver={onOver} 
+                onMouseLeave={onLeave}
+            >
                 <FontAwesomeIcon icon={faUser} className="icon" />
                 <span>Profile</span>
             </div>
 
-            <div className="rmore" id="rmore" onClick={onNavLinkClick} onMouseOver={onOver} onMouseLeave={onLeave}>
+            <div 
+                className={ "rmore " + (activeNav?.more ? 'active-nav' : "") } 
+                id="rmore"
+                onClick={onNavLinkClick} 
+                onMouseOver={onOver} 
+                onMouseLeave={onLeave}
+            >
                 
                 <FontAwesomeIcon icon={faEllipsis} className="icon" />
                 <span>More</span>

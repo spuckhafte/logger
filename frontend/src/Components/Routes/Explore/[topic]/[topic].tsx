@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import AllLogs from "../../../Utils/AllLogs";
 import { getLocal, incomingSockets, runOnce } from "../../../Helpers/funcs";
-import { socket } from "../../../../App";
+import { AppContext, socket } from "../../../../App";
 import { EntryData, HashtagInfo } from "../../../../../../types";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import millify from "millify";
 import prettyMilliseconds from "pretty-ms";
 
@@ -12,17 +12,20 @@ export default function Topic() {
     const { sessionId } = getLocal('entryData') as EntryData;
 
     const [topicInfo, setTopicInfo] = useState({} as HashtagInfo);
+    const { changeActiveNav } = useContext(AppContext);
 
     const { firstLog, totalLogs, lastActive, myLogs } = topicInfo;
 
     runOnce(() => {
         socket.emit('get-hashtag-details', topic, sessionId);
+
+        if (changeActiveNav) changeActiveNav('explore');
     });
 
     incomingSockets(() => {
         socket.on('hashtag-details', (tagDetails: HashtagInfo) => {
             setTopicInfo(tagDetails);
-        })
+        });
     })
 
     return <div className="a-hashtag">
