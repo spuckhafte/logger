@@ -1,7 +1,8 @@
 import { Socket } from "socket.io";
-import { EntryData, LoginData } from "../../../types";
+import { CacheType, EntryData, LoginData } from "../../../types";
 import Users from "../schema/Users.js";
 import { sessionExpired, sha } from "../helpers/funcs.js";
+import { cache } from "../server.js";
 
 export default async function LoginUser(userData: LoginData, socket: Socket) {
     const { username, password, sessionId } = userData;
@@ -26,6 +27,8 @@ export default async function LoginUser(userData: LoginData, socket: Socket) {
         user.lastActive = Date.now().toString();
         await user.save();
 
+        cache.json.set(socket.id, '.', { logs: [] } as CacheType);
+
         socket.emit('entry-ok', {
             username,
             email: user.email,
@@ -41,6 +44,8 @@ export default async function LoginUser(userData: LoginData, socket: Socket) {
         } else {
             user.lastActive = Date.now().toString();
             await user.save();
+
+            cache.json.set(`${socket.id}`, '.', { logs: [] } as CacheType);
 
             socket.emit('entry-ok', {
                 username: user.username,

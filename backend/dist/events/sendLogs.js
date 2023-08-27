@@ -11,12 +11,24 @@ import Logs from "../schema/Logs.js";
 import Users from "../schema/Users.js";
 import expireSession from "../helpers/expireSession.js";
 import Hashtags from "../schema/Hashtags.js";
+import { cache } from "../server.js";
 export default function SendLogs(sessionId, lastLogId, filterTag, socket) {
     return __awaiter(this, void 0, void 0, function* () {
         const user = yield Users.findOne({ 'sessionId.id': sessionId });
         if (!user || !user._id) {
             expireSession(socket);
             return;
+        }
+        if (!filterTag) {
+            const cacheData = (yield cache.json.get(socket.id, { path: '.' }));
+            const cachedLogs = cacheData.logs;
+            console.log(cachedLogs);
+            const lastLogIndexInCache = cachedLogs.findIndex(log => log.id == lastLogId);
+            if (lastLogIndexInCache >= 0 &&
+                lastLogIndexInCache != (cachedLogs.length - 1)) {
+                socket.emit('parsed-logs', cachedLogs, false);
+                return;
+            }
         }
         const hashtag = yield Hashtags.findOne({ name: filterTag });
         const allLogs = (filterTag && hashtag && hashtag._id) ?
@@ -42,6 +54,10 @@ export default function SendLogs(sessionId, lastLogId, filterTag, socket) {
                 when: log.createdAt,
             };
         })));
+        if (!filterTag) {
+            const prev = (yield cache.json.get(socket.id, { path: '.' }));
+            cache.json.set(socket.id, '.', { logs: [...prev.logs, reqLogs] });
+        }
         socket.emit('parsed-logs', reqLogs, isLastLog);
     });
 }

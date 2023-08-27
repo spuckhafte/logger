@@ -51,3 +51,7 @@ export type HashtagInfo = {
     totalLogs: string|null,
     myLogs: string|null,
 }
+
+export type CacheType = {
+    logs: ALog[]
+}

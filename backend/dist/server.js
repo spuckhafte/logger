@@ -17,8 +17,15 @@ import SendLogs from "./events/sendLogs.js";
 import { Publish } from "./events/publish.js";
 import { Like } from "./events/like.js";
 import TopicInfo from "./events/topicInfo.js";
+import { createClient } from "redis";
 dotenv.config();
 export const io = new Server({ cors: { origin: "*" } });
+export let cache = createClient({
+    url: process.env.REDIS,
+    socket: {
+        connectTimeout: 100 * 1000
+    }
+});
 io.on("connection", socket => {
     socket.on('signup-verify', (data) => __awaiter(void 0, void 0, void 0, function* () {
         yield AuthorizeUser(data, socket);
@@ -38,6 +45,9 @@ io.on("connection", socket => {
     socket.on('get-hashtag-details', (topic, sessionId) => __awaiter(void 0, void 0, void 0, function* () {
         yield TopicInfo(topic, sessionId, socket);
     }));
+    socket.on('disconnect', () => {
+        cache.json.del(socket.id, '.');
+    });
 });
 function Init() {
     var _a, _b;
@@ -49,6 +59,8 @@ function Init() {
         mongoose.set('strictQuery', false);
         yield mongoose.connect(process.env.DB);
         console.log('📦 [connected to db]');
+        yield cache.connect();
+        console.log('📄 [connected to redis]');
         console.log('\n🚀 [SERVER INITIALIZED]');
     });
 }

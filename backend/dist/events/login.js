@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import Users from "../schema/Users.js";
 import { sessionExpired, sha } from "../helpers/funcs.js";
+import { cache } from "../server.js";
 export default function LoginUser(userData, socket) {
     var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function* () {
@@ -30,6 +31,7 @@ export default function LoginUser(userData, socket) {
                 newSessionId = (_b = user.sessionId) === null || _b === void 0 ? void 0 : _b.id;
             user.lastActive = Date.now().toString();
             yield user.save();
+            cache.json.set(socket.id, '.', { logs: [] });
             socket.emit('entry-ok', {
                 username,
                 email: user.email,
@@ -46,6 +48,7 @@ export default function LoginUser(userData, socket) {
             else {
                 user.lastActive = Date.now().toString();
                 yield user.save();
+                cache.json.set(`${socket.id}`, '.', { logs: [] });
                 socket.emit('entry-ok', {
                     username: user.username,
                     email: user.email,

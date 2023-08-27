@@ -9,9 +9,16 @@ import SendLogs from "./events/sendLogs.js";
 import { Publish } from "./events/publish.js";
 import { Like } from "./events/like.js";
 import TopicInfo from "./events/topicInfo.js";
+import { createClient, RedisClientType } from "redis";
 
 dotenv.config();
 export const io = new Server({ cors: { origin: "*" } });
+export let cache = createClient({
+    url: process.env.REDIS as string,
+    socket: {
+        connectTimeout: 100 * 1000
+    }
+});
 
 io.on("connection", socket => {
     socket.on('signup-verify', async (data: AuthData) => {
@@ -22,7 +29,7 @@ io.on("connection", socket => {
         await LoginUser(data, socket);
     });
 
-    socket.on('get-logs', async (sessionId: string, lastLogId: string | null, filterTag: string|null) => {
+    socket.on('get-logs', async (sessionId: string, lastLogId: string | null, filterTag: string | null) => {
         await SendLogs(sessionId, lastLogId, filterTag, socket);
     });
 
@@ -37,6 +44,10 @@ io.on("connection", socket => {
     socket.on('get-hashtag-details', async (topic: string, sessionId: string) => {
         await TopicInfo(topic, sessionId, socket);
     });
+
+    socket.on('disconnect', () => {
+        cache.json.del(socket.id, '.');
+    })
 });
 
 async function Init() {
@@ -49,6 +60,10 @@ async function Init() {
     mongoose.set('strictQuery', false);
     await mongoose.connect(process.env.DB as string);
     console.log('📦 [connected to db]');
+    
+    await cache.connect();
+    console.log('📄 [connected to redis]');
+
     console.log('\n🚀 [SERVER INITIALIZED]');
 }
 Init();
