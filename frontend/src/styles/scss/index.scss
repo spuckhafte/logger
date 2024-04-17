@@ -319,6 +319,7 @@ body {
 }
 
 .external-modal-screen {
+    all: unset;
     position: absolute;
     width: 100%;
     height: 100vh;
@@ -500,7 +501,12 @@ body {
         }
         .count {
             font-size: small;
-            color: $heart
+            color: $heart;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 }

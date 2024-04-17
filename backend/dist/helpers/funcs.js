@@ -7,5 +7,5 @@ export function sessionExpired(setAt) {
     return +setAt + EXPIRY < Date.now();
 }
 export function getPfp(username) {
-    return `https://avatars.dicebear.com/api/bottts/${username}.png`;
+    return `https://api.dicebear.com/7.x/bottts/png?seed=${username}`;
 }

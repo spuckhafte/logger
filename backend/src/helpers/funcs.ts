@@ -11,5 +11,5 @@ export function sessionExpired(setAt: string) {
 }
 
 export function getPfp(username: string) {
-    return `https://avatars.dicebear.com/api/bottts/${username}.png`
+    return `https://api.dicebear.com/7.x/bottts/png?seed=${username}`
 }

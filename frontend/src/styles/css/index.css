@@ -651,6 +651,10 @@ body {
 .tweet .like .count {
   font-size: small;
   color: #F91880;
+  cursor: pointer;
+}
+.tweet .like .count:hover {
+  text-decoration: underline;
 }
 
 .create-new-log {
