@@ -37,3 +37,15 @@
     white-space: nowrap;
     overflow: hidden;
 }
+
+@mixin respondAt($breakpoint) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin respondFrom($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}

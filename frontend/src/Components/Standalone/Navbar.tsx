@@ -1,4 +1,4 @@
-import { faHome, faHashtag, faBell, faUser, faEllipsis  } from "@fortawesome/free-solid-svg-icons"
+import { faHome, faHashtag, faBell, faUser, faEllipsis, faPen  } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Brand from '../../../public/logo.png';
 import { useContext, useState, useRef } from "react";
@@ -7,11 +7,13 @@ import { getLocal, storeLocal, storeTemp } from "../Helpers/funcs";
 import { EntryData } from "../../../../types";
 import HybridImg from "../Utils/HybridImg";
 import { useNavigate } from "react-router-dom";
+import useWindowWidth from "../Hooks/useWindowWidth";
 
 export default () => {
     const { lightTheme, setNewLogScreen } = useContext(AppContext);
     const [showMore, setShowMore] = useState(false);
     const navigate = useNavigate();
+    const windowWidth = useWindowWidth();
 
     const { username, displayName, pfp } = getLocal('entryData') as EntryData;
 
@@ -20,11 +22,14 @@ export default () => {
     if (!setNewLogScreen) return;
 
     function onOver(e:React.MouseEvent<HTMLDivElement, MouseEvent>, veryDark=false) {
+        if (windowWidth == "small") return;
+
         let dark = veryDark ? "#1C2733" : "#283340";
         e.currentTarget.style.background = lightTheme ? "#EBEEF0" : dark;
     }
 
     function onLeave(e:React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        if (windowWidth == "small") return;
         e.currentTarget.style.background = "transparent";
     }
 
@@ -55,7 +60,7 @@ export default () => {
                 onMouseLeave={onLeave}
             >
                 <FontAwesomeIcon icon={faHome} className="icon" />
-                <span>Home</span>
+                { windowWidth != "small" && <span>Home</span> }
             </div>
 
             <div 
@@ -65,7 +70,7 @@ export default () => {
                 onMouseLeave={onLeave}
             >
                 <FontAwesomeIcon icon={faHashtag} className="icon" />
-                <span>Explore</span>
+                { windowWidth != "small" && <span>Explore</span> }
             </div>
 
             <div 
@@ -75,7 +80,7 @@ export default () => {
                 onMouseLeave={onLeave}
             >
                 <FontAwesomeIcon icon={faBell} className="icon" />
-                <span>Notifications</span>
+                { windowWidth != "small" && <span>Notifications</span> }
             </div>
 
             <div 
@@ -85,7 +90,7 @@ export default () => {
                 onMouseLeave={onLeave}
             >
                 <FontAwesomeIcon icon={faUser} className="icon" />
-                <span>Profile</span>
+                { windowWidth != "small" && <span>Profile</span> }
             </div>
 
             <div 
@@ -97,7 +102,7 @@ export default () => {
             >
                 
                 <FontAwesomeIcon icon={faEllipsis} className="icon" />
-                <span>More</span>
+                { windowWidth != "small" && <span>More</span> }
             </div>
             { 
                 showMore 
@@ -109,24 +114,36 @@ export default () => {
                     : "" 
             }
 
-            <button onClick={() => setNewLogScreen(prev => !prev)}>Log</button>
+            <button onClick={() => setNewLogScreen(prev => !prev)}>
+                {
+                    windowWidth == "small" 
+                        ? <FontAwesomeIcon icon={faPen} />
+                        : "Log"
+                }
+            </button>
         </div>
 
         <div className="user-flake" onMouseOver={onOver} onMouseLeave={onLeave}>
             <div className="user-flake-main">
                 <HybridImg src={pfp} alt="pfp" className="usr-img" />
-                <div className="user-details">
-                    <span className="display" title={displayName}>{displayName}</span>
-                    <span 
-                        className="username"
-                        style={{ color: lightTheme ? '#5B7083' : '#8899A6' }}
-                        title={username}
-                    >@{username}</span>
+                {
+                    windowWidth != "small" && 
+                    <div className="user-details">
+                        <span className="display" title={displayName}>{displayName}</span>
+                        <span 
+                            className="username"
+                            style={{ color: lightTheme ? '#5B7083' : '#8899A6' }}
+                            title={username}
+                        >@{username}</span>
+                    </div>
+                }
+            </div>
+            {
+                windowWidth != "small" &&
+                <div className="fmore">
+                    <FontAwesomeIcon icon={faEllipsis} />
                 </div>
-            </div>
-            <div className="fmore">
-                <FontAwesomeIcon icon={faEllipsis} />
-            </div>
+            }
         </div>
 
     </nav>

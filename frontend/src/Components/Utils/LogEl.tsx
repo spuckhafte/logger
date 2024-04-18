@@ -11,6 +11,7 @@ import { EntryData, LikeLog } from "../../../../types";
 import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import { useState } from "react";
+import useWindowWidth from "../Hooks/useWindowWidth";
 
 type TweetProps = {
     text: string;
@@ -46,6 +47,7 @@ export default function LogEl(props: TweetProps) {
 
     const [whoLikedModal, setWhoLikedModal] = useState(false);
     const navigate = useNavigate();
+    const windowWidth = useWindowWidth();
 
     function logLiked(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         const likeLogData = {
@@ -71,9 +73,12 @@ export default function LogEl(props: TweetProps) {
                     <span className="display" title={displayname}>
                         {displayname}
                     </span>
-                    <span className="username" title={username}>
-                        {username}
-                    </span>
+                    {
+                        windowWidth != "small" &&
+                        <span className="username" title={username}>
+                            {username}
+                        </span>
+                    }
                     <span className="sep">·</span>
                     <span className="time" title={when}>
                         {prettyMilliseconds(Date.now() - +when, {

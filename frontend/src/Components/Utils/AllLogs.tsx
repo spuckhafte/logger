@@ -3,11 +3,15 @@ import { AppContext, socket } from "../../App";
 import { getLocal, incomingSockets, runOnce } from "../Helpers/funcs";
 import { ALog, EntryData } from "../../../../types";
 import LogEl from "./LogEl";
+import useWindowWidth from "../Hooks/useWindowWidth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
     heading?: string,
     filterTag?: string,
-    aHashtag?: boolean
+    aHashtag?: boolean,
+    headingBtnFunc?: () => void,
 }
 export default function AllLogs(props: Props) {
 
@@ -17,6 +21,7 @@ export default function AllLogs(props: Props) {
     const [logs, setLogs] = useState<ALog[]>([]);
     const [lastId, setLastId] = useState<string|null>(null);
     const [isLastLog, setIsLastLog] = useState(false);
+    const windowWidth = useWindowWidth();
 
     const allLogsEl = useRef<HTMLDivElement>(null);
     const loaderEl = useRef<HTMLDivElement>(null);
@@ -75,7 +80,16 @@ export default function AllLogs(props: Props) {
         {
             props.heading ? 
                 <div className={"all-logs-title " + (props.aHashtag ? "all-logs-title-hastag" : "")}>
-                    {props.heading}
+                    <div>{props.heading}</div>
+                    {
+                        windowWidth != "large" &&
+                        <span>
+                            <FontAwesomeIcon 
+                                icon={faBars}
+                                onClick={props.headingBtnFunc}
+                            />
+                        </span>
+                    }
                 </div>
             : ""
         }

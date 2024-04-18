@@ -21,48 +21,33 @@ body {
 
 .the-app {
   display: flex;
+  overflow: hidden;
 }
 
 .navbar {
-  left: 0;
-  height: 100vh;
+  height: 100svh;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-between;
-  align-items: end;
+  padding-inline: 0.4rem;
+  padding-left: 0.8rem;
   border-right: 0.1px solid var(--border);
-  padding-right: 1.5rem;
 }
-.navbar > * {
-  margin-right: 1rem;
+.navbar .routes .branding {
+  padding-bottom: 1.3rem;
 }
 .navbar .routes .branding img {
-  margin-left: 10px;
   height: 40px;
-  margin-top: 0.5rem;
-}
-.navbar .routes .branding img:hover {
-  animation: logo-hover infinite 2s;
-  transition: all ease-in-out;
-}
-.navbar .routes > :not(:first-child) {
-  width: -moz-fit-content;
-  width: fit-content;
-  padding: 1rem;
-  font-size: 20px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border-radius: 9999px;
+  margin-top: 1rem;
 }
 .navbar .routes > :not(:first-child) .icon {
   height: 25px;
-  margin-right: 1.5rem;
+  margin-inline: 0.55rem;
+  padding-block: 0.8rem;
 }
 .navbar .routes .rhome .icon {
-  margin-right: 1.2rem !important;
+  margin-inline: 0.4rem;
 }
 .navbar .routes button {
   outline: none;
@@ -70,68 +55,123 @@ body {
   background-color: #1DA1F2;
   color: white;
   font-size: 18px !important;
-  margin-left: 15px;
-  width: 100% !important;
-  border-radius: 9999px;
   transition: 0.2s ease-in-out;
   margin-top: 1.5rem;
-}
-.navbar .routes button:hover {
-  background-color: #0d95e8 !important;
+  width: fit-content !important;
+  border-radius: 100%;
+  padding: 0.8rem;
 }
 .navbar .user-flake {
-  display: flex;
   margin-bottom: 0.5rem;
-  max-width: 12rem;
-  min-width: 12rem;
-  position: relative;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 100px;
-  margin-bottom: 0.1rem;
-  margin-right: -0.4rem;
 }
-.navbar .user-flake .user-flake-main {
-  width: 80%;
-  display: flex;
-  cursor: default;
+@media (min-width: 650px) {
+  .navbar {
+    left: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
+    padding-inline: 0;
+    padding-right: 1.5rem;
+  }
+  .navbar > * {
+    margin-right: 1rem;
+  }
+  .navbar .routes .branding img {
+    margin-left: 10px;
+  }
+  .navbar .routes > :not(:first-child) {
+    width: fit-content;
+    padding: 1rem;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 9999px;
+  }
+  .navbar .routes > :not(:first-child) .icon {
+    padding-block: 0;
+    margin-inline: 0;
+    margin-right: 1.5rem;
+  }
+  .navbar .routes .rhome .icon {
+    margin-right: 1.2rem !important;
+  }
+  .navbar .routes button {
+    width: 100% !important;
+    border-radius: 9999px;
+    padding: 0;
+    margin-left: 15px;
+  }
+  .navbar .routes button:hover {
+    background-color: #0d95e8 !important;
+  }
+  .navbar .user-flake {
+    display: flex;
+    margin-bottom: 0.5rem;
+    max-width: 12rem;
+    min-width: 12rem;
+    position: relative;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 100px;
+    margin-bottom: 0.1rem;
+    margin-right: -0.4rem;
+  }
 }
-.navbar .user-flake .user-flake-main .usr-img {
-  margin-right: 10px;
+@media (min-width: 650px) and (max-width: 650px) {
+  .navbar .user-flake {
+    min-width: auto;
+    margin: 0;
+    padding: 0;
+  }
 }
-.navbar .user-flake .user-flake-main .user-details {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
-}
-.navbar .user-flake .user-flake-main .user-details .display {
-  font-weight: bold;
-  font-size: small;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.navbar .user-flake .user-flake-main .user-details .username {
-  font-size: smaller;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  cursor: text;
-}
-.navbar .user-flake .fmore {
-  width: 20%;
-  grid-area: more;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  margin-right: 0.5rem;
-  cursor: default;
-}
-.navbar .user-flake .fmore > * {
-  padding: 3px;
-  transition: 0.2s ease-in-out;
-  cursor: pointer;
+@media (min-width: 650px) {
+  .navbar .user-flake .user-flake-main {
+    width: 80%;
+    display: flex;
+    cursor: default;
+  }
+  .navbar .user-flake .user-flake-main .usr-img {
+    margin-right: 10px;
+  }
+  .navbar .user-flake .user-flake-main .user-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .navbar .user-flake .user-flake-main .user-details .display {
+    font-weight: bold;
+    font-size: small;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .navbar .user-flake .user-flake-main .user-details .username {
+    font-size: smaller;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: text;
+  }
+  .navbar .user-flake .fmore {
+    width: 20%;
+    grid-area: more;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-right: 0.5rem;
+    cursor: default;
+  }
+  .navbar .user-flake .fmore > * {
+    padding: 3px;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+  }
 }
 
 .home {
@@ -143,12 +183,60 @@ body {
 .home > * {
   height: 100vh;
 }
+@media (max-width: 650px) {
+  .home > * {
+    height: 100svh;
+  }
+}
 .home .main {
   grid-area: main;
   border-right: 0.1px solid var(--border);
 }
 .home .events {
+  padding: 0.5rem;
   grid-area: events;
+}
+@media (max-width: 970px) {
+  .home {
+    display: block;
+    position: relative;
+  }
+  .home .main {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+  }
+}
+@media (max-width: 970px) and (max-width: 650px) {
+  .home .main {
+    height: 100svh;
+  }
+}
+@media (max-width: 970px) {
+  .home .events {
+    position: absolute;
+    width: 250px;
+    left: calc(100% - 250px);
+    padding-inline: 0;
+    transition: 0.2s ease-in-out;
+    background-color: var(--bg);
+    border-left: 1px solid var(--border);
+    box-shadow: 1px 5px 10px 5px var(--bghover);
+  }
+  .home .events > * {
+    padding-inline: 0.5rem;
+  }
+  .home .events .cancelEvents {
+    display: flex;
+    justify-content: end;
+  }
+  .home .events .cancelEvents > * {
+    cursor: pointer;
+  }
+  .home .hideEvents {
+    left: 100%;
+    box-shadow: none;
+  }
 }
 
 .a-hashtag {
@@ -348,7 +436,6 @@ body {
   text-decoration-line: underline;
 }
 .entry-page .error-modal {
-  width: -moz-fit-content !important;
   width: fit-content !important;
 }
 .entry-page .error-modal .validator-reasons-list .title {
@@ -423,7 +510,6 @@ body {
 }
 .hybrid-input .show-hide-password {
   margin-top: -15px;
-  width: -moz-fit-content;
   width: fit-content;
   position: relative;
   left: 90%;
@@ -465,11 +551,11 @@ body {
 }
 
 .external-modal-screen {
+  all: unset;
   position: absolute;
   width: 100%;
   height: 100vh;
-  -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   background-color: rgba(0, 0, 0, 0.596);
   z-index: 1;
 }
@@ -565,6 +651,11 @@ body {
   padding-inline: 0.8rem;
   padding-block: 0.5rem;
 }
+@media (max-width: 650px) {
+  .tweet {
+    padding-inline: 0.5rem;
+  }
+}
 .tweet:hover {
   background-color: var(--bghover);
 }
@@ -577,6 +668,7 @@ body {
 }
 .tweet .tweet-body {
   width: 100%;
+  padding-right: 5px;
 }
 .tweet .tweet-body .names-nd-time {
   display: flex;
@@ -611,7 +703,6 @@ body {
   margin-top: 0.3rem;
   font-size: 15px;
   color: #00BA7C;
-  width: -moz-fit-content;
   width: fit-content;
   cursor: pointer;
 }
@@ -721,10 +812,16 @@ body {
 }
 
 .all-logs-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: larger;
   padding-inline: 1rem;
   padding-block: 0.5rem;
   font-weight: bold;
+}
+.all-logs-title span {
+  cursor: pointer;
 }
 
 .all-logs-title-hastag {
@@ -737,6 +834,7 @@ body {
 .all-logs {
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .all-logs > * {
   border-bottom: none;
@@ -765,18 +863,17 @@ body {
   margin-bottom: 0rem !important;
 }
 
-::-webkit-scrollbar {
-  width: 5px;
+@media (min-width: 650px) {
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--scrolltrack);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1DA1F2;
+  }
 }
-
-::-webkit-scrollbar-track {
-  background: var(--scrolltrack);
-}
-
-::-webkit-scrollbar-thumb {
-  background: #1DA1F2;
-}
-
 a {
   color: #1DA1F2;
   text-decoration-line: none;
@@ -799,6 +896,11 @@ b {
 }
 
 .backdrop-blur {
-  -webkit-backdrop-filter: blur(8px);
-          backdrop-filter: blur(8px);
-}/*# sourceMappingURL=index.css.map */
+  backdrop-filter: blur(8px);
+}
+
+div {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/*# sourceMappingURL=index.css.map */
