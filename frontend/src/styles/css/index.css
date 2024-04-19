@@ -34,6 +34,9 @@ body {
   padding-left: 0.8rem;
   border-right: 0.1px solid var(--border);
 }
+.navbar .routes {
+  position: relative;
+}
 .navbar .routes .branding {
   padding-bottom: 1.3rem;
 }
@@ -305,23 +308,31 @@ body {
 }
 
 .more-window {
-  position: relative;
-  width: 120% !important;
+  position: absolute;
+  width: 10rem !important;
   border-radius: 10px !important;
   margin-bottom: -5.1rem;
-  bottom: 6rem;
-  left: 0.5rem;
+  bottom: 10rem;
+  left: 1rem;
   display: flex;
   flex-direction: column;
-  padding: 0 !important;
+  justify-content: center;
+  align-items: center;
+  padding-block: 0 !important;
   cursor: default !important;
+  z-index: 100;
+}
+@media (max-width: 970px) {
+  .more-window {
+    left: 0.6rem;
+    padding-inline: 1rem;
+  }
 }
 .more-window > * {
-  position: relative;
-  width: 87%;
+  width: inherit;
   font-size: large;
   padding: 10px;
-  padding-inline: 16px;
+  padding-inline: 1rem;
   display: flex;
   cursor: pointer;
   transition: 0.1s ease-in-out;
