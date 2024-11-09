@@ -1,11 +1,10 @@
 import Linkify from "react-linkify";
 import HybridImg from "./HybridImg";
 import MdParser from "react-markdown";
-import { getLocal, urlRegex } from "../Helpers/funcs";
+import { beautifyTime, getLocal, urlRegex } from "../Helpers/funcs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import millify from "millify";
-import prettyMilliseconds from "pretty-ms";
 import { socket } from "../../App";
 import { EntryData, LikeLog } from "../../../../types";
 import { useNavigate } from "react-router-dom";
@@ -81,9 +80,7 @@ export default function LogEl(props: TweetProps) {
                     }
                     <span className="sep">·</span>
                     <span className="time" title={when}>
-                        {prettyMilliseconds(Date.now() - +when, {
-                            compact: true,
-                        })}
+                        { beautifyTime(when) }
                     </span>
                 </div>
                 <div className="text">

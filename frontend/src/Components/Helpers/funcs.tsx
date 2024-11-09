@@ -1,3 +1,4 @@
+import prettyMilliseconds from "pretty-ms";
 import { useEffect, useRef } from "react";
 
 export function runNTimes(func: (() => void), N=1) {
@@ -48,6 +49,21 @@ export function getTemp(key: string) {
         item = JSON.parse(item.split('>>object')[0]);
     }
     return item as unknown;
+}
+
+export function beautifyTime(time?: string) {
+    let ago = prettyMilliseconds(Date.now() - +(time ?? 0)).split(' ')[0];
+    
+    if (ago.includes('d'))
+        if (parseInt(ago) >= 365)
+            ago = (parseInt(ago) / 365).toFixed(0) + 'y';
+        else if (parseInt(ago) >= 30)
+            ago = (parseInt(ago) / 30).toFixed(0) + 'mo';
+        else if (parseInt(ago) >= 7)
+            ago = (parseInt(ago) / 7).toFixed(0) + 'w';
+        else ago = ago;
+
+    return ago.replace(/m\b/g, 'mi');
 }
 
 export const urlRegex = () => /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/g;

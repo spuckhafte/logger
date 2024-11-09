@@ -82,13 +82,13 @@ export default function AllLogs(props: Props) {
                 <div className={"all-logs-title " + (props.aHashtag ? "all-logs-title-hastag" : "")}>
                     <div>{props.heading}</div>
                     {
-                        windowWidth != "large" &&
-                        <span>
+                        windowWidth != "large"
+                        /**<span>
                             <FontAwesomeIcon 
                                 icon={faBars}
                                 onClick={props.headingBtnFunc}
                             />
-                        </span>
+                        </span>*/
                     }
                 </div>
             : ""

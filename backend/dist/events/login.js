@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import Users from "../schema/Users.js";
 import { sessionExpired, sha } from "../helpers/funcs.js";
 export default function LoginUser(userData, socket) {
-    var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b, _c, _d;
         const { username, password, sessionId } = userData;
         if (!sessionId) {
             const user = yield Users.findOne({ username, password: sha(password) });

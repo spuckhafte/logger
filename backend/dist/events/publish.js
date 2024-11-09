@@ -12,8 +12,8 @@ import Logs from "../schema/Logs.js";
 import Hashtags from "../schema/Hashtags.js";
 import expireSession from "../helpers/expireSession.js";
 export function Publish(myLog, socket) {
-    var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b, _c;
         let { text, hashtag, sessionId } = myLog;
         hashtag = !hashtag ? "unclassified" : hashtag;
         const user = yield Users.findOne({ 'sessionId.id': sessionId });

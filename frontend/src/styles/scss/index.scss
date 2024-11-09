@@ -36,9 +36,23 @@ body {
 
 .home {
     width: 100%;
-    display: grid;
-    grid-template-areas: "main    events";
-    grid-template-columns: 4fr 1fr;
+    /*display: grid;
+    grid-template-areas: "main";
+    grid-template-columns: 4fr;*/
+    
+    display: block;
+    position: relative;
+
+    .main {
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+
+        @include respondAt($small-width) {
+          height: 100svh;
+        }
+    } 
+
 
     > * { 
         height: 100vh;
@@ -53,25 +67,12 @@ body {
         border-right: 0.1px solid var(--border);
     }
 
-    .events {
+    /*.events {
         padding: .5rem;
         grid-area: events;
-    }
+    }*/
 
     @include respondAt($mid-width) {
-        display: block;
-        position: relative;
- 
-        .main {
-            position: absolute;
-            width: 100%;
-            height: 100vh;
-
-            @include respondAt($small-width) {
-                height: 100svh;
-            }
-        }
-
         .events {
             position: absolute;
             width: 250px;
@@ -180,6 +181,86 @@ body {
             }
         }
     }
+
+    @include respondAt($mid-width) {
+        display: block;
+        position: relative;
+ 
+        .main {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+
+            @include respondAt($small-width) {
+                height: 100svh;
+            }
+        }
+
+        .topic-about {
+            position: absolute;
+            width: 15rem;
+            height: fit-content;
+            
+            padding: 0;
+            right: 1.5rem;
+            bottom: 1.5rem;
+
+            .details-card {
+                background-color: transparent;
+                backdrop-filter: blur(80px);
+                box-shadow: 0px 0px 20px 0px black;
+              
+                .topic-name {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-inline-end: .5rem;
+                    
+                    >:nth-child(2) {
+                        color: $primary-blue !important;
+                    }
+                }
+            }
+        }
+
+        .topic-about-show {
+            animation: open-about 1s ease-in-out;
+        }
+
+        .topic-about-hide {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 100%;
+            backdrop-filter: blur(10px);
+            color: $primary-blue;
+            
+            font-size: large;
+
+            >:first-child {
+                border-radius: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                border: 3px solid var(--border);
+            }
+        }
+
+        @keyframes open-about {
+            0% {
+                width: 0;
+                height: 0;
+            }
+            50% {
+                height: fit-content;
+            }
+
+            100% {
+                width: 15rem;
+            }
+        }
+    }
 }
 
 
@@ -216,6 +297,7 @@ body {
         display: flex;
         cursor: pointer;
         transition: 0.1s ease-in-out;
+        font-weight: bold;
     }
 
     .theme-switch {
@@ -289,6 +371,10 @@ body {
     display: flex;
     flex-direction: column;
     @include no-select;
+
+    @include respondAt($small-width) {
+        font-size: 15px;
+    }
 
     div {
         height: 100%;
@@ -396,8 +482,16 @@ body {
         background-color: var(--modalBg);
         box-shadow: 0px 0px 15px 2px $primary-blue;
         border-radius: 2rem;    
+ 
+        @include respondAt($small-width) {
+            width: calc(100% - 8rem) !important;
+            padding-block: 1.5rem;
+            padding-inline: 1rem;
+        }
+
         .title {
             font-size: large;
+            font-size: medium;
             font-weight: bold;
         }
     
@@ -409,7 +503,7 @@ body {
             margin-top: 1rem;
             width: 100%;
             @include std-btn;
-            font-size: medium
+            font-size: small
         }
     }
 }
@@ -477,8 +571,10 @@ body {
         padding-inline: 0.5rem;
     }
 
-    &:hover {
-        background-color: var(--bghover );
+    @include respondFrom($small-width) {
+        &:hover {
+            background-color: var(--bghover);
+        }
     }
 
     .user-pfp {

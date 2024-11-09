@@ -1,7 +1,7 @@
 import { useState } from "react"
 import AllLogs from "../../Utils/AllLogs"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 export default () => {
     const [showEvents, setShowEvents] = useState(false);
@@ -14,7 +14,7 @@ export default () => {
             </div>
 
 
-            <div className={`events ${showEvents ? '' : "hideEvents"}`}>
+            {/**<div className={`events ${showEvents ? '' : "hideEvents"}`}>
                 {
                     showEvents &&
                     <div className="cancelEvents">
@@ -25,7 +25,7 @@ export default () => {
                         />
                     </div>
                 }
-            </div>
+            </div>*/}
         </div>
     </>
 }

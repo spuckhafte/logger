@@ -40,8 +40,8 @@ io.on("connection", socket => {
     }));
 });
 function Init() {
-    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b;
         InitMailer();
         console.log('📨 [mailer is ready]');
         io.listen(+((_a = process.env.PORT) !== null && _a !== void 0 ? _a : 3000));

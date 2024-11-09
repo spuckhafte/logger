@@ -16,6 +16,10 @@
         @include abs-center;
         transform: translate(-50%, -50%);
 
+        @include respondAt($small-width) {
+            width: calc(100% - 8rem);
+        }
+
         img {
             height: 50px;
         }
@@ -34,17 +38,31 @@
             >:not(:last-child) {
                 margin-bottom: 1rem;
                 min-width: 20rem;
+
+                @include respondAt($small-width) {
+                    width: 60%;
+                    min-width: 15rem;
+                }
             }
 
             .sign-in-btn {
                 @include std-btn;
                 min-width: 20rem;
+
+                @include respondAt($small-width) {
+                    width: 60%;
+                    min-width: 15rem;
+                }
             }
         }
 
         .alter-entry {
             color: lighten($color: $dark4, $amount: 7);
             margin-right: 4.1rem;
+
+            @include respondAt($small-width) {
+                margin-right: 0;
+            }
             
             .alter-action {
                 color: $primary-blue;
