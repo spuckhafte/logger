@@ -341,9 +341,6 @@ body {
   .a-hashtag .topic-about .details-card .topic-name > :nth-child(2) {
     color: #1DA1F2 !important;
   }
-  .a-hashtag .topic-about-show {
-    animation: open-about 1s ease-in-out;
-  }
   .a-hashtag .topic-about-hide {
     width: 4rem;
     height: 4rem;
@@ -359,18 +356,6 @@ body {
     justify-content: center;
     align-items: center;
     border: 3px solid var(--border);
-  }
-  @keyframes open-about {
-    0% {
-      width: 0;
-      height: 0;
-    }
-    50% {
-      height: fit-content;
-    }
-    100% {
-      width: 15rem;
-    }
   }
 }
 

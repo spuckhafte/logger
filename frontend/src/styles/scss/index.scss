@@ -223,10 +223,6 @@ body {
             }
         }
 
-        .topic-about-show {
-            animation: open-about 1s ease-in-out;
-        }
-
         .topic-about-hide {
             width: 4rem;
             height: 4rem;
@@ -244,20 +240,6 @@ body {
                 align-items: center;
 
                 border: 3px solid var(--border);
-            }
-        }
-
-        @keyframes open-about {
-            0% {
-                width: 0;
-                height: 0;
-            }
-            50% {
-                height: fit-content;
-            }
-
-            100% {
-                width: 15rem;
             }
         }
     }
