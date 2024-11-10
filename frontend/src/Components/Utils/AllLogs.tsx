@@ -4,8 +4,6 @@ import { getLocal, incomingSockets, runOnce } from "../Helpers/funcs";
 import { ALog, EntryData } from "../../../../types";
 import LogEl from "./LogEl";
 import useWindowWidth from "../Hooks/useWindowWidth";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
     heading?: string,
