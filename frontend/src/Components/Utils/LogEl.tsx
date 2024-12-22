@@ -8,8 +8,6 @@ import millify from "millify";
 import { socket } from "../../App";
 import { EntryData, LikeLog } from "../../../../types";
 import { useNavigate } from "react-router-dom";
-import Modal from "./Modal";
-import { useState } from "react";
 import useWindowWidth from "../Hooks/useWindowWidth";
 
 type TweetProps = {
@@ -22,6 +20,7 @@ type TweetProps = {
     liked: boolean;
     totalLikes: number;
     hashtag: string;
+    windowSize: "small" | "mid" | "large";
 };
 
 export default function LogEl(props: TweetProps) {
@@ -35,6 +34,7 @@ export default function LogEl(props: TweetProps) {
         liked,
         totalLikes,
         hashtag,
+        windowSize
     } = props;
     const { sessionId } = getLocal("entryData") as EntryData;
 
@@ -44,7 +44,6 @@ export default function LogEl(props: TweetProps) {
     const isRaw = text.toLowerCase().startsWith("<raw>");
     if (isRaw) text = text.replace("<raw>", "");
 
-    const [whoLikedModal, setWhoLikedModal] = useState(false);
     const navigate = useNavigate();
     const windowWidth = useWindowWidth();
 
@@ -58,8 +57,10 @@ export default function LogEl(props: TweetProps) {
         socket.emit("log-liked", likeLogData);
     }
 
-    function showWhoLiked() {
-        setWhoLikedModal(prev => !prev);
+    function handleLogDoubleClick(e: React.MouseEvent<HTMLDivElement>) {
+        if (e.detail != 2) return;
+
+        logLiked(e)
     }
 
     return (
@@ -67,7 +68,7 @@ export default function LogEl(props: TweetProps) {
             <div className="user-pfp">
                 <HybridImg src={src} alt="user pfp" />
             </div>
-            <div className="tweet-body">
+            <div className="tweet-body" onClick={handleLogDoubleClick} id={id}>
                 <div className="names-nd-time">
                     <span className="display" title={displayname}>
                         {displayname}
@@ -96,35 +97,49 @@ export default function LogEl(props: TweetProps) {
                         <MdParser>{text}</MdParser>
                     )}
                 </div>
-                <div
-                    className="hashtag"
-                    onClick={() => navigate(`/explore/${hashtag}`)}
-                >
-                    {hashtag}
+                <div className="tweet-footer">
+                    {
+                        windowSize == "small" &&
+                        <div className="like">
+                            <div className="heart" onClick={logLiked} id={id}>
+                                {liked ? (
+                                    <FontAwesomeIcon className="liked" icon={faHeart} />
+                                ) : (
+                                    <RegularHeart />
+                                )}
+                            </div>
+
+                            <div className="count">
+                                {millify(totalLikes)}
+                            </div>
+                        </div>
+                    }
+       
+                    <div
+                        className="hashtag"
+                        onClick={() => navigate(`/explore/${hashtag}`)}
+                    >
+                        {hashtag}
+                    </div>
+
                 </div>
             </div>
-            <div className="like">
-                <div className="heart" onClick={logLiked} id={id}>
-                    {liked ? (
-                        <FontAwesomeIcon className="liked" icon={faHeart} />
-                    ) : (
-                        <RegularHeart />
-                    )}
-                </div>
+            {
+                windowSize != "small" &&
+                <div className="like">
+                    <div className="heart" onClick={logLiked} id={id}>
+                        {liked ? (
+                            <FontAwesomeIcon className="liked" icon={faHeart} />
+                        ) : (
+                            <RegularHeart />
+                        )}
+                    </div>
 
-                <div className="count" onClick={showWhoLiked}>
-                    {millify(totalLikes)}
+                    <div className="count">
+                        {millify(totalLikes)}
+                    </div>
                 </div>
-            </div>
-
-            {whoLikedModal && (
-                <Modal
-                    title={"H"}
-                    className="who-liked-modal"
-                    setInputReturn={false}
-                    setShowModal={setWhoLikedModal}
-                />
-            )}
+            }
         </div>
     );
 }

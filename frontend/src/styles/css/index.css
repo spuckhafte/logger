@@ -800,18 +800,35 @@ body {
 .tweet .tweet-body .text {
   word-break: break-word;
 }
-.tweet .tweet-body .hashtag {
+.tweet .tweet-body .tweet-footer {
   margin-top: 0.3rem;
+  width: fit-content;
+  display: flex;
+  gap: 0.5rem;
+}
+.tweet .tweet-body .tweet-footer .hashtag {
   font-size: 15px;
   color: #00BA7C;
   width: fit-content;
   cursor: pointer;
 }
-.tweet .tweet-body .hashtag::before {
+.tweet .tweet-body .tweet-footer .hashtag::before {
   content: "#";
 }
-.tweet .tweet-body .hashtag:hover {
+.tweet .tweet-body .tweet-footer .hashtag:hover {
   text-decoration-line: underline;
+}
+.tweet .tweet-body .tweet-footer .like {
+  width: fit-content;
+  flex-direction: row;
+  gap: 0.3rem;
+}
+.tweet .tweet-body .tweet-footer .like .heart {
+  font-size: small;
+}
+.tweet .tweet-body .tweet-footer .like .count {
+  font-size: smaller;
+  font-weight: bold;
 }
 .tweet .like {
   user-select: none;
@@ -843,10 +860,6 @@ body {
 .tweet .like .count {
   font-size: small;
   color: #F91880;
-  cursor: pointer;
-}
-.tweet .like .count:hover {
-  text-decoration: underline;
 }
 
 .create-new-log {

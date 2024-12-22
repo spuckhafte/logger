@@ -80,7 +80,6 @@ export default function AllLogs(props: Props) {
                 <div className={"all-logs-title " + (props.aHashtag ? "all-logs-title-hastag" : "")}>
                     <div>{props.heading}</div>
                     {
-                        windowWidth != "large"
                         /**<span>
                             <FontAwesomeIcon 
                                 icon={faBars}
@@ -108,6 +107,7 @@ export default function AllLogs(props: Props) {
                         liked={newLog.liked}
                         totalLikes={newLog.totalLikes}
                         hashtag={newLog.hashtag ?? "unclassified"}
+                        windowSize={windowWidth}
                         key={i}
                     />;
 

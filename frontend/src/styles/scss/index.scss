@@ -570,6 +570,7 @@ body {
     .tweet-body {
         width: 100%;
         padding-right: 5px;
+        
 
         .names-nd-time {
             display: flex;
@@ -598,23 +599,43 @@ body {
         .text {
             word-break: break-word;
         }
-
-        .hashtag {
+        
+        .tweet-footer {
             margin-top: 0.3rem;
-            font-size: 15px;
-            color: $green;
-            &::before { 
-                content: '#';
-            }
             width: fit-content;
-            cursor: pointer;
-            &:hover {
+            display: flex;
+            gap: .5rem;
+
+            .hashtag {
+              font-size: 15px;
+              color: $green;
+              &::before { 
+                content: '#';
+              }
+              width: fit-content;
+              cursor: pointer;
+              &:hover {
                 text-decoration-line: underline;
+              }
+            } 
+
+            .like {
+                width: fit-content;
+                flex-direction: row;
+                gap: .3rem;
+                .heart {
+                  font-size: small;
+                }
+                .count {
+                  font-size: smaller;
+                  font-weight: bold;
+                }
             }
-        }        
+        }
+
     }
     
-    .like {
+    .like  {
         @include no-select;
         width: 5%;
         display: flex;
@@ -647,11 +668,6 @@ body {
         .count {
             font-size: small;
             color: $heart;
-            cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
         }
     }
 }
