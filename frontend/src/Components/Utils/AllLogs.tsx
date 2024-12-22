@@ -4,6 +4,9 @@ import { getLocal, incomingSockets, runOnce } from "../Helpers/funcs";
 import { ALog, EntryData } from "../../../../types";
 import LogEl from "./LogEl";
 import useWindowWidth from "../Hooks/useWindowWidth";
+import { useAtom } from "jotai";
+import { ShowPlaceholderAtom } from "../Helpers/atoms";
+import AllLogsPlaceholder from "./Placeholders/AllLogsPh";
 
 type Props = {
     heading?: string,
@@ -20,6 +23,7 @@ export default function AllLogs(props: Props) {
     const [lastId, setLastId] = useState<string|null>(null);
     const [isLastLog, setIsLastLog] = useState(false);
     const windowWidth = useWindowWidth();
+    const [showPlaceholder, setShowPlaceholder] = useAtom(ShowPlaceholderAtom);
 
     const allLogsEl = useRef<HTMLDivElement>(null);
     const loaderEl = useRef<HTMLDivElement>(null);
@@ -34,6 +38,7 @@ export default function AllLogs(props: Props) {
     }
 
     runOnce(() => {
+        setShowPlaceholder(true);
         socket.emit('get-logs', sessionId, lastId, props.filterTag);
     });
 
@@ -41,7 +46,8 @@ export default function AllLogs(props: Props) {
         socket.on('parsed-logs', (newLogs: ALog[], lastLog: boolean) => {
             setIsLastLog(lastLog);
             if (newLogs && newLogs.length !== 0) {
-                
+                if (showPlaceholder) 
+                    setShowPlaceholder(false);
                 setLogs(prevLogs => prevLogs.concat(newLogs));
                 setLastId(newLogs[newLogs.length - 1].id);
             }
@@ -90,12 +96,20 @@ export default function AllLogs(props: Props) {
                 </div>
             : ""
         }
+        
+        
         <div 
-            className={"all-logs " + (props.aHashtag ? "all-logs-for-hashtag" : "")} 
+            className={
+                "all-logs " + 
+                    (props.aHashtag ? "all-logs-for-hashtag" : "") +
+                    (showPlaceholder ? " all-logs-placeholder" : "")
+            } 
             ref={allLogsEl} 
             onScroll={allLogsScrolled}
         >
             {
+                showPlaceholder ?
+                <AllLogsPlaceholder /> :
                 logs.map((newLog, i) => {
                     let El = <LogEl
                         text={newLog.text} 

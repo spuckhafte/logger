@@ -3,6 +3,7 @@
 @import "_mixins";
 @import "_newLog";
 @import "_navbar";
+@import "ph";
 
 :root {
     --wordcountcolor: yellow;
@@ -15,6 +16,12 @@
     --hybridTextPlaceholder: #3A444C;
     --bgsyncblacknwhite: white;
 }
+
+@include ph-dp;
+@include ph-text-sm;
+@include ph-text-md;
+@include ph-text-lg;
+
 
 body {
     font-family: 'Inter', sans-serif;
@@ -694,6 +701,9 @@ body {
     color: $green;
     &::before { content: "#"; };
 }
+.all-logs-placeholder {
+  overflow: hidden !important;
+}
 .all-logs {
     height: 100%;
     overflow-y: auto;
@@ -721,6 +731,23 @@ body {
 
             animation: bufferLoader 0.3s linear infinite; 
         }
+    }
+
+    .phlogs {
+      .phlog {
+        border-bottom: solid 1px var(--border);
+        display: flex;
+        padding-inline: .8rem;
+        padding-block: .5rem;
+        gap: .5rem;
+
+        &__content {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: .2rem;
+        }
+      }
     }
 }
 .all-logs-for-hashtag {

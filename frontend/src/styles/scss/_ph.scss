@@ -1,0 +1,59 @@
+@mixin ph-dp {
+  .ph-dp {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background-color: var($dark4);
+    animation: ph-dp 2s infinite ease-in-out;
+
+  }
+}
+
+@mixin ph-text-sm {
+  .ph-text-sm {
+    width: 25%;
+    max-width: 200px;
+    min-width: 85px;
+    height: 1rem;
+    border-radius: 10px;
+    background-color: var($dark4);
+    animation: ph-dp 2s infinite ease-in-out;
+  }
+}
+
+@mixin ph-text-md {
+  .ph-text-md {
+    width: 40%;
+    max-width: 300px;
+    min-width: 133px;
+    height: 1rem;
+    border-radius: 15px;
+    background-color: var($dark4);
+    animation: ph-dp 2s infinite ease-in-out;
+  }
+}
+
+@mixin ph-text-lg {
+  .ph-text-lg {
+    width: 55%;
+    max-width: 400px;
+    min-width: 180px;
+    height: 1rem;
+    border-radius: 20px;
+    background-color: var($dark4);
+    animation: ph-dp 2s infinite;
+  }
+}
+
+
+@keyframes ph-dp {
+  0% {
+    background-color: $dark4;
+  }
+  50% {
+    background-color: $dark5;
+  }
+  100% {
+    background-color: $dark4;
+  }
+}
