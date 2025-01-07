@@ -79,12 +79,19 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding-inline: 0.4rem;
-  padding-left: 0.8rem;
+  padding-inline: 0.1rem;
   border-right: 0.8px solid var(--border);
 }
 .navbar .routes {
   position: relative;
+}
+@media (max-width: 650px) {
+  .navbar .routes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 }
 .navbar .routes .branding {
   padding-bottom: 1.3rem;
@@ -106,12 +113,13 @@ body {
   border: none;
   background-color: #1DA1F2;
   color: white;
-  font-size: 18px !important;
+  font-size: 13px !important;
   transition: 0.2s ease-in-out;
   margin-top: 1.5rem;
   width: fit-content !important;
   border-radius: 100%;
-  padding: 0.8rem;
+  padding-block: 0.3rem;
+  padding-inline: 0.4rem;
 }
 .navbar .user-flake {
   margin-bottom: 0.5rem;
